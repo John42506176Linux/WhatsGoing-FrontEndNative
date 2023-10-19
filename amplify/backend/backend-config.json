@@ -1,0 +1,63 @@
+{
+  "api": {
+    "WhatsGoingOn": {
+      "dependsOn": [],
+      "output": {
+        "authConfig": {
+          "additionalAuthenticationProviders": [],
+          "defaultAuthentication": {
+            "apiKeyConfig": {
+              "apiKeyExpirationDays": 7
+            },
+            "authenticationType": "API_KEY"
+          }
+        }
+      },
+      "providerPlugin": "awscloudformation",
+      "service": "AppSync"
+    }
+  },
+  "auth": {
+    "testcliproject1920f8aa": {
+      "customAuth": false,
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "Cognito",
+      "serviceType": "imported"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_auth_testcliproject1920f8aa_nativeClientId": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "testcliproject1920f8aa"
+        }
+      ]
+    },
+    "AMPLIFY_auth_testcliproject1920f8aa_userPoolId": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "testcliproject1920f8aa"
+        }
+      ]
+    },
+    "AMPLIFY_auth_testcliproject1920f8aa_userPoolName": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "testcliproject1920f8aa"
+        }
+      ]
+    },
+    "AMPLIFY_auth_testcliproject1920f8aa_webClientId": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "testcliproject1920f8aa"
+        }
+      ]
+    }
+  }
+}
