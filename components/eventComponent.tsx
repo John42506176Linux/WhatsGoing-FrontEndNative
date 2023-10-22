@@ -1,16 +1,19 @@
-
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { Event } from '../models/event';
 import CustomImageComponent from './imageSourceComponent';
 import { formatDate } from '../utilities/utilities';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import { connect } from 'react-redux'; // Import connect from react-redux
+import { addSavedEvent } from '../actions/savedEventActions'; // Import our addSavedEvent action
 
 interface Props {
   event: Event;
   onPress: () => void;
+  addSavedEvent: (event: Event) => void; // Add this line
 }
 
-const EventComponent: React.FC<Props> = ({ event, onPress }) => {
+const EventComponent: React.FC<Props> = ({ event, onPress, addSavedEvent }) => {
   return (
     <TouchableOpacity onPress={onPress}>
       <View style={styles.card}>
@@ -86,4 +89,8 @@ const styles = StyleSheet.create({
   },
 });
 
-export default EventComponent;
+const mapDispatchToProps = {
+  addSavedEvent, // Add this line
+};
+
+export default connect(null,mapDispatchToProps)(EventComponent);

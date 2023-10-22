@@ -1,6 +1,6 @@
 import * as ActionTypes from './actionTypes';
 import { getCurrentDate } from '../utilities/utilities';
-import { BACKEND_URL } from 'react-native-dotenv';
+import { REACT_APP_BACKEND_URL } from "@env";
 
 interface FetchEventRequestAction {
   type: typeof ActionTypes.FETCH_EVENT_REQUEST;
@@ -68,8 +68,7 @@ export const fetchEvent =  (userLocation: string, event_preferences: string[]) =
       const timeoutId = setTimeout(() => {
         controller.abort();
       }, 100000);
-      console.log("fetching event");
-      const response = await fetch(BACKEND_URL, {
+      const response = await fetch(REACT_APP_BACKEND_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -83,12 +82,10 @@ export const fetchEvent =  (userLocation: string, event_preferences: string[]) =
       });
       clearTimeout(timeoutId);
       const data = await response.json();
-      console.log("Data: ", data);
       if (response.status !== 200) throw new Error(`Server Error:${data['detail']}`);
       let jsonArray = JSON.parse(data['response']);
       dispatch(fetchEventSuccess(jsonArray));
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
       if (error.name === 'TypeError') {
         dispatch(fetchEventConnectionError());
       } else if (error.name === 'AbortError') {

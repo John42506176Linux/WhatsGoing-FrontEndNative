@@ -3,8 +3,11 @@
 // this is an auto generated file. This will be overwritten
 
 export const onCreateEvent = /* GraphQL */ `
-  subscription OnCreateEvent($filter: ModelSubscriptionEventFilterInput) {
-    onCreateEvent(filter: $filter) {
+  subscription OnCreateEvent(
+    $filter: ModelSubscriptionEventFilterInput
+    $owner: String
+  ) {
+    onCreateEvent(filter: $filter, owner: $owner) {
       id
       event_date
       event_link
@@ -23,12 +26,16 @@ export const onCreateEvent = /* GraphQL */ `
       is_going
       createdAt
       updatedAt
+      owner
     }
   }
 `;
 export const onUpdateEvent = /* GraphQL */ `
-  subscription OnUpdateEvent($filter: ModelSubscriptionEventFilterInput) {
-    onUpdateEvent(filter: $filter) {
+  subscription OnUpdateEvent(
+    $filter: ModelSubscriptionEventFilterInput
+    $owner: String
+  ) {
+    onUpdateEvent(filter: $filter, owner: $owner) {
       id
       event_date
       event_link
@@ -47,12 +54,16 @@ export const onUpdateEvent = /* GraphQL */ `
       is_going
       createdAt
       updatedAt
+      owner
     }
   }
 `;
 export const onDeleteEvent = /* GraphQL */ `
-  subscription OnDeleteEvent($filter: ModelSubscriptionEventFilterInput) {
-    onDeleteEvent(filter: $filter) {
+  subscription OnDeleteEvent(
+    $filter: ModelSubscriptionEventFilterInput
+    $owner: String
+  ) {
+    onDeleteEvent(filter: $filter, owner: $owner) {
       id
       event_date
       event_link
@@ -71,6 +82,7 @@ export const onDeleteEvent = /* GraphQL */ `
       is_going
       createdAt
       updatedAt
+      owner
     }
   }
 `;

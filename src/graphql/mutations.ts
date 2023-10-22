@@ -26,6 +26,7 @@ export const createEvent = /* GraphQL */ `
       is_going
       createdAt
       updatedAt
+      owner
     }
   }
 `;
@@ -53,6 +54,7 @@ export const updateEvent = /* GraphQL */ `
       is_going
       createdAt
       updatedAt
+      owner
     }
   }
 `;
@@ -80,6 +82,7 @@ export const deleteEvent = /* GraphQL */ `
       is_going
       createdAt
       updatedAt
+      owner
     }
   }
 `;

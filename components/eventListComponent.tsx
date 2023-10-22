@@ -1,4 +1,4 @@
-import React, { useEffect,  useState } from 'react';
+import React, { useEffect,  useState, useCallback } from 'react';
 import { FlatList, View, Text, Button, ActivityIndicator,StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { fetchEvent } from '../actions/eventActions';
@@ -21,16 +21,22 @@ interface Props {
   location_loading: boolean;
   location_data: any;
   location_error: string | null;
-  fetchEvent: () => void;
+  categories: string[];
+  fetchEvent: (userLocation: string, event_preferences: string[]) => void;
   getLocation: () => void;
 }
 
 const EventComponentList: React.FC<Props> = ({ navigation, 
   event_loading, event_data, event_error, 
-  location_data, location_loading, location_error,
+  location_data, location_loading, location_error, categories,
   fetchEvent, getLocation }) => {
+
+  const handlePress = useCallback(() => {
+    const eventId = 123; // Replace with the actual event ID
+    fetchEvent(location_data, categories);
+  }, [fetchEvent]);
   useEffect(() => {
-    fetchEvent();
+    fetchEvent(location_data, categories);
     getLocation();
   }, [fetchEvent, getLocation]);
 
@@ -45,17 +51,17 @@ const EventComponentList: React.FC<Props> = ({ navigation,
         <ActivityIndicator size="large" color="#0000ff" />
       ) : event_error ? (
         <>
-          <Button title="Fetch New Tweets" onPress={fetchEvent} />
+          <Button title="Fetch New Tweets" onPress={handlePress} />
           <Text>Error: {event_error}</Text>
         </>
       ) : (
         <View style={styles.top_container}>
           <Text style={{ ...styles.header, textAlign: 'center' }}>Tech Events happening in San Francisco</Text>
           <View style={styles.buttonContainer}>
-            <Button title="Reload Tweets" onPress={fetchEvent} />
+            <Button title="Reload Tweets" onPress={handlePress} />
           </View>
           <Text style={styles.header}>Tweets</Text>
-          <Text>Location:{location_loading}</Text>
+          <Text>Location:{location_data}</Text>
           <FlatList
             data={event_data}
             renderItem={({ item }) => {
@@ -103,6 +109,7 @@ const mapStateToProps = (state: any) => {
     location_data: state.location.data,
     location_loading: state.location.loading,
     location_error: state.location.error,
+    categories: state.categories.selectedCategories,
   });
 }
 

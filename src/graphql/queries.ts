@@ -23,6 +23,7 @@ export const getEvent = /* GraphQL */ `
       is_going
       createdAt
       updatedAt
+      owner
     }
   }
 `;
@@ -52,6 +53,7 @@ export const listEvents = /* GraphQL */ `
         is_going
         createdAt
         updatedAt
+        owner
       }
       nextToken
     }

@@ -1,10 +1,25 @@
 {
   "api": {
-    "WhatsGoingOn": {
-      "dependsOn": [],
+    "testcliproject": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "testcliproject04076780"
+        }
+      ],
       "output": {
         "authConfig": {
-          "additionalAuthenticationProviders": [],
+          "additionalAuthenticationProviders": [
+            {
+              "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+              "userPoolConfig": {
+                "userPoolId": "authtestcliproject04076780"
+              }
+            }
+          ],
           "defaultAuthentication": {
             "apiKeyConfig": {
               "apiKeyExpirationDays": 7
@@ -18,46 +33,31 @@
     }
   },
   "auth": {
-    "testcliproject1920f8aa": {
+    "testcliproject04076780": {
       "customAuth": false,
       "dependsOn": [],
+      "frontendAuthConfig": {
+        "mfaConfiguration": "OFF",
+        "mfaTypes": [
+          "SMS"
+        ],
+        "passwordProtectionSettings": {
+          "passwordPolicyCharacters": [],
+          "passwordPolicyMinLength": 8
+        },
+        "signupAttributes": [
+          "EMAIL"
+        ],
+        "socialProviders": [],
+        "usernameAttributes": [
+          "EMAIL"
+        ],
+        "verificationMechanisms": [
+          "EMAIL"
+        ]
+      },
       "providerPlugin": "awscloudformation",
-      "service": "Cognito",
-      "serviceType": "imported"
-    }
-  },
-  "parameters": {
-    "AMPLIFY_auth_testcliproject1920f8aa_nativeClientId": {
-      "usedBy": [
-        {
-          "category": "auth",
-          "resourceName": "testcliproject1920f8aa"
-        }
-      ]
-    },
-    "AMPLIFY_auth_testcliproject1920f8aa_userPoolId": {
-      "usedBy": [
-        {
-          "category": "auth",
-          "resourceName": "testcliproject1920f8aa"
-        }
-      ]
-    },
-    "AMPLIFY_auth_testcliproject1920f8aa_userPoolName": {
-      "usedBy": [
-        {
-          "category": "auth",
-          "resourceName": "testcliproject1920f8aa"
-        }
-      ]
-    },
-    "AMPLIFY_auth_testcliproject1920f8aa_webClientId": {
-      "usedBy": [
-        {
-          "category": "auth",
-          "resourceName": "testcliproject1920f8aa"
-        }
-      ]
+      "service": "Cognito"
     }
   }
 }

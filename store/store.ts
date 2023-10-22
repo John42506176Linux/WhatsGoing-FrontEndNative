@@ -2,12 +2,16 @@ import { configureStore } from '@reduxjs/toolkit';
 import eventReducer from '../reducers/eventReducer';
 import locationReducer from '../reducers/locationReducer';
 import categoriesReducer from '../reducers/categoriesReducer';
+import savedEventReducer from '../reducers/savedEventReducer';
+import userReducer from '../reducers/userReducer';
 
 const store = configureStore({
   reducer: {
     events: eventReducer,
     location: locationReducer,
     categories: categoriesReducer,
+    savedEvents: savedEventReducer,
+    user: userReducer,
   },
 });
 

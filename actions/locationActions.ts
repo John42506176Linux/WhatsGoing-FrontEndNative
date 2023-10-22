@@ -4,8 +4,11 @@ import {
   GET_LOCATION_FAILURE,
 } from './actionTypes';
 import Geolocation from 'react-native-geolocation-service';
-// import Geocoder from 'react-native-geocoding';
+import Geocoder from 'react-native-geocoding';
+import { REACT_APP_MAP_API_KEY } from '@env';
 import {PermissionsAndroid} from 'react-native';
+
+Geocoder.init(REACT_APP_MAP_API_KEY);
 
 export const getLocationRequest = () => ({
   type: GET_LOCATION_REQUEST,
@@ -38,9 +41,16 @@ export const getLocation = () => {
       console.log('granted', granted);
       if (granted === 'granted') {
           Geolocation.getCurrentPosition(
-          position => {
-            console.log(position);
-            dispatch(getLocationSuccess(position.coords))
+          async position => {
+            const location = await Geocoder.from({
+              latitude : position.coords.latitude,
+              longitude : position.coords.longitude
+            });
+            const addressComponents = location.results[0].address_components;
+            const city = addressComponents.find(component => component.types.includes('locality'))?.long_name;
+            const state = addressComponents.find(component => component.types.includes('administrative_area_level_1'))?.short_name;
+            const formattedAddress = `${city}, ${state}`;            
+            dispatch(getLocationSuccess(formattedAddress))
           },
           error => {
             // See error code charts below.

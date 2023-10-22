@@ -81,8 +81,8 @@ export const addSavedEvent = (savedEvent: SavedEvent) => {
     dispatch(addSavedEventRequest());
     try {
       const response = await API.graphql(graphqlOperation(createEvent, { input: savedEvent }));
-      dispatch(addSavedEventSuccess({}));
-    } catch (error) {
+      dispatch(addSavedEventSuccess(savedEvent));
+    } catch (error: any) {
       dispatch(addSavedEventFailure(error.message));
     }
   };
@@ -94,8 +94,8 @@ export const listSavedEvents = () => {
     try {
       const response = await API.graphql(graphqlOperation(listEvents));
     //   const savedEvents = response.
-      dispatch(listSavedEventsSuccess({}));
-    } catch (error) {
+      dispatch(listSavedEventsSuccess(response.data.listEvents.items));
+    } catch (error:any) {
       dispatch(listSavedEventsFailure(error.message));
     }
   };

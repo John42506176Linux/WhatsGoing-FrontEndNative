@@ -13,15 +13,10 @@
     },
     "categories": {
       "auth": {
-        "testcliproject1920f8aa": {
-          "userPoolId": "us-west-1_lPKGmHhdY",
-          "userPoolName": "awesomeproject230b0fac_userpool_230b0fac-dev",
-          "webClientId": "26dsha1dgj7hkks79k0vftgl8q",
-          "nativeClientId": "akut294oagev5cp9l0tvdm3qc"
-        }
+        "testcliproject04076780": {}
       },
       "api": {
-        "WhatsGoingOn": {}
+        "testcliproject": {}
       }
     }
   }

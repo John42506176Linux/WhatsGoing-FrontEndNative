@@ -121,6 +121,7 @@ export type Event = {
   is_going: boolean,
   createdAt: string,
   updatedAt: string,
+  owner?: string | null,
 };
 
 export type UpdateEventInput = {
@@ -284,6 +285,7 @@ export type CreateEventMutation = {
     is_going: boolean,
     createdAt: string,
     updatedAt: string,
+    owner?: string | null,
   } | null,
 };
 
@@ -313,6 +315,7 @@ export type UpdateEventMutation = {
     is_going: boolean,
     createdAt: string,
     updatedAt: string,
+    owner?: string | null,
   } | null,
 };
 
@@ -342,6 +345,7 @@ export type DeleteEventMutation = {
     is_going: boolean,
     createdAt: string,
     updatedAt: string,
+    owner?: string | null,
   } | null,
 };
 
@@ -370,6 +374,7 @@ export type GetEventQuery = {
     is_going: boolean,
     createdAt: string,
     updatedAt: string,
+    owner?: string | null,
   } | null,
 };
 
@@ -402,6 +407,7 @@ export type ListEventsQuery = {
       is_going: boolean,
       createdAt: string,
       updatedAt: string,
+      owner?: string | null,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -409,6 +415,7 @@ export type ListEventsQuery = {
 
 export type OnCreateEventSubscriptionVariables = {
   filter?: ModelSubscriptionEventFilterInput | null,
+  owner?: string | null,
 };
 
 export type OnCreateEventSubscription = {
@@ -432,11 +439,13 @@ export type OnCreateEventSubscription = {
     is_going: boolean,
     createdAt: string,
     updatedAt: string,
+    owner?: string | null,
   } | null,
 };
 
 export type OnUpdateEventSubscriptionVariables = {
   filter?: ModelSubscriptionEventFilterInput | null,
+  owner?: string | null,
 };
 
 export type OnUpdateEventSubscription = {
@@ -460,11 +469,13 @@ export type OnUpdateEventSubscription = {
     is_going: boolean,
     createdAt: string,
     updatedAt: string,
+    owner?: string | null,
   } | null,
 };
 
 export type OnDeleteEventSubscriptionVariables = {
   filter?: ModelSubscriptionEventFilterInput | null,
+  owner?: string | null,
 };
 
 export type OnDeleteEventSubscription = {
@@ -488,5 +499,6 @@ export type OnDeleteEventSubscription = {
     is_going: boolean,
     createdAt: string,
     updatedAt: string,
+    owner?: string | null,
   } | null,
 };
