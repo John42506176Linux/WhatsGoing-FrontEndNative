@@ -38,7 +38,6 @@ export const getLocation = () => {
           buttonPositive: 'OK',
         },
       );
-      console.log('granted', granted);
       if (granted === 'granted') {
           Geolocation.getCurrentPosition(
           async position => {
@@ -49,21 +48,23 @@ export const getLocation = () => {
             const addressComponents = location.results[0].address_components;
             const city = addressComponents.find(component => component.types.includes('locality'))?.long_name;
             const state = addressComponents.find(component => component.types.includes('administrative_area_level_1'))?.short_name;
-            const formattedAddress = `${city}, ${state}`;            
+            const formattedAddress = `${city}, ${state}`;   
+            console.log(formattedAddress);         
             dispatch(getLocationSuccess(formattedAddress))
           },
           error => {
             // See error code charts below.
-            console.log(error.code, error.message);
+            console.error(error.code, error.message);
             dispatch(getLocationFailure('Permission to access location was denied'));
           },
           {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
         );
       } else {
-        console.log('You cannot use Geolocation');
+        console.error('You cannot use Geolocation');
       }
-    } catch (err) {
-      dispatch(getLocationFailure("Error"));
+    } catch (error: any) {
+      console.error(error);
+      dispatch(getLocationFailure(error.message));
     }
   };
 };

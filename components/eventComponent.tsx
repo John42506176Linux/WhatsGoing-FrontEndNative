@@ -1,19 +1,26 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { Event } from '../models/event';
 import CustomImageComponent from './imageSourceComponent';
 import { formatDate } from '../utilities/utilities';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import { connect } from 'react-redux'; // Import connect from react-redux
-import { addSavedEvent } from '../actions/savedEventActions'; // Import our addSavedEvent action
+import { connect } from 'react-redux'; 
+import { addSavedEvent } from '../actions/savedEventActions'; 
+import Icon from 'react-native-vector-icons/FontAwesome'; 
+
 
 interface Props {
   event: Event;
   onPress: () => void;
-  addSavedEvent: (event: Event) => void; // Add this line
+  addSavedEvent: (event: Event) => Promise<void>; // Add this line
 }
 
 const EventComponent: React.FC<Props> = ({ event, onPress, addSavedEvent }) => {
+
+  
+  const handlePress = useCallback(() => {
+    addSavedEvent(Event.fromJSON(event));
+  }, [addSavedEvent]);
+
   return (
     <TouchableOpacity onPress={onPress}>
       <View style={styles.card}>
@@ -34,6 +41,9 @@ const EventComponent: React.FC<Props> = ({ event, onPress, addSavedEvent }) => {
             <Text>{event.retweet_count}</Text>
           </View>
         </View>
+        <TouchableOpacity onPress={handlePress} style={styles.heartIcon}>
+            <Icon name="heart" size={30} color="#900" />
+        </TouchableOpacity>
       </View>
       </View>
     </TouchableOpacity>
@@ -87,10 +97,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginRight: 10,
   },
+  heartIcon: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+  },
 });
 
 const mapDispatchToProps = {
-  addSavedEvent, // Add this line
+  addSavedEvent,
 };
 
 export default connect(null,mapDispatchToProps)(EventComponent);

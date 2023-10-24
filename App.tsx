@@ -1,34 +1,24 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { Linking, TouchableOpacity, Text, StyleSheet} from 'react-native';
+import { TouchableOpacity, Text, StyleSheet} from 'react-native';
 import store from './store/store';
-import EventComponentList from './components/eventListComponent';
+import EventComponentList from './components/screens/eventListComponent';
 import EventView from './components/eventViewComponent';
-import LoginComponent from './components/loginComponent';
-import CategorySelection from './components/categoryComponent';
+import LoginComponent from './components/screens/loginComponent';
+import CategorySelection from './components/screens/categoryComponent';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Amplify } from 'aws-amplify';
-import {createEvent} from './src/graphql/mutations';
-import {listEvents} from './src/graphql/queries';
-import InAppBrowser from 'react-native-inappbrowser-reborn';
-
-
+import { urlOpener } from './utilities/utilities';
+import 'core-js/full/symbol/async-iterator';
 import awsconfig from './src/aws-exports';
-async function urlOpener(url: string, redirectUrl: string): Promise<void> {
-  await InAppBrowser.isAvailable();
-  const authSessionResult = await InAppBrowser.openAuth(url, redirectUrl, {
-    showTitle: false,
-    enableUrlBarHiding: true,
-    enableDefaultShare: false,
-    ephemeralWebSession: false,
-  });
+import { DataStore } from 'aws-amplify';
 
-  if (authSessionResult.type === 'success') {
-    console.log("success");
-    Linking.openURL(authSessionResult.url);
-  }
-}
+import { SQLiteAdapter } from '@aws-amplify/datastore-storage-adapter/SQLiteAdapter';
+
+DataStore.configure({
+  storageAdapter: SQLiteAdapter
+});
 
 Amplify.configure({
   ...awsconfig,

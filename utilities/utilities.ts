@@ -1,3 +1,5 @@
+import InAppBrowser from 'react-native-inappbrowser-reborn';
+import { Linking } from 'react-native';
 
 export function getCurrentDate(): string {
     const date = new Date();
@@ -12,4 +14,18 @@ export function formatDate(dateString: string): string {
     const date = new Date(dateString);
     return date.toLocaleDateString("en-US", { year: 'numeric', month: 'long', day: 'numeric' });
 }
+
+export async function urlOpener(url: string, redirectUrl: string): Promise<void> {
+    await InAppBrowser.isAvailable();
+    const authSessionResult = await InAppBrowser.openAuth(url, redirectUrl, {
+      showTitle: false,
+      enableUrlBarHiding: true,
+      enableDefaultShare: false,
+      ephemeralWebSession: false,
+    });
+  
+    if (authSessionResult.type === 'success') {
+      Linking.openURL(authSessionResult.url);
+    }
+  }
   

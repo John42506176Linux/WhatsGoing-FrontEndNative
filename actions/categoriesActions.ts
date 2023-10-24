@@ -6,7 +6,7 @@ export interface ToggleCategoryAction {
 }
 
 export const toggleCategory = (categoryName: string): ToggleCategoryAction => (
-  {
+{
   type: TOGGLE_CATEGORY,
   payload: categoryName
 });

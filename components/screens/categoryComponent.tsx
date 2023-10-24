@@ -1,10 +1,10 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { toggleCategory } from '../actions/categoriesActions';
-import { RootState } from '../store/store';
+import { toggleCategory } from '../../actions/categoriesActions';
+import { RootState } from '../../store/store';
 import { ScrollView } from 'react-native';
-import { categories } from '../constants/categories_constants';
+import { categories } from '../../constants/categories_constants';
 
 interface CategoryProps {
   name: string;

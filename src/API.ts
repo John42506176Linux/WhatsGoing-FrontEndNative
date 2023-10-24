@@ -18,7 +18,9 @@ export type CreateEventInput = {
   favorite_count?: number | null,
   reply_count?: number | null,
   twitter_id?: string | null,
-  is_going: boolean,
+  is_going?: boolean | null,
+  saved_event_date: string,
+  _version?: number | null,
 };
 
 export type ModelEventConditionInput = {
@@ -37,6 +39,7 @@ export type ModelEventConditionInput = {
   reply_count?: ModelIntInput | null,
   twitter_id?: ModelStringInput | null,
   is_going?: ModelBooleanInput | null,
+  saved_event_date?: ModelStringInput | null,
   and?: Array< ModelEventConditionInput | null > | null,
   or?: Array< ModelEventConditionInput | null > | null,
   not?: ModelEventConditionInput | null,
@@ -118,9 +121,13 @@ export type Event = {
   favorite_count?: number | null,
   reply_count?: number | null,
   twitter_id?: string | null,
-  is_going: boolean,
+  is_going?: boolean | null,
+  saved_event_date: string,
   createdAt: string,
   updatedAt: string,
+  _version: number,
+  _deleted?: boolean | null,
+  _lastChangedAt: number,
   owner?: string | null,
 };
 
@@ -141,10 +148,13 @@ export type UpdateEventInput = {
   reply_count?: number | null,
   twitter_id?: string | null,
   is_going?: boolean | null,
+  saved_event_date?: string | null,
+  _version?: number | null,
 };
 
 export type DeleteEventInput = {
   id: string,
+  _version?: number | null,
 };
 
 export type ModelEventFilterInput = {
@@ -164,6 +174,7 @@ export type ModelEventFilterInput = {
   reply_count?: ModelIntInput | null,
   twitter_id?: ModelStringInput | null,
   is_going?: ModelBooleanInput | null,
+  saved_event_date?: ModelStringInput | null,
   and?: Array< ModelEventFilterInput | null > | null,
   or?: Array< ModelEventFilterInput | null > | null,
   not?: ModelEventFilterInput | null,
@@ -189,6 +200,7 @@ export type ModelEventConnection = {
   __typename: "ModelEventConnection",
   items:  Array<Event | null >,
   nextToken?: string | null,
+  startedAt?: number | null,
 };
 
 export type ModelSubscriptionEventFilterInput = {
@@ -208,6 +220,7 @@ export type ModelSubscriptionEventFilterInput = {
   reply_count?: ModelSubscriptionIntInput | null,
   twitter_id?: ModelSubscriptionStringInput | null,
   is_going?: ModelSubscriptionBooleanInput | null,
+  saved_event_date?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionEventFilterInput | null > | null,
   or?: Array< ModelSubscriptionEventFilterInput | null > | null,
 };
@@ -282,9 +295,13 @@ export type CreateEventMutation = {
     favorite_count?: number | null,
     reply_count?: number | null,
     twitter_id?: string | null,
-    is_going: boolean,
+    is_going?: boolean | null,
+    saved_event_date: string,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
     owner?: string | null,
   } | null,
 };
@@ -312,9 +329,13 @@ export type UpdateEventMutation = {
     favorite_count?: number | null,
     reply_count?: number | null,
     twitter_id?: string | null,
-    is_going: boolean,
+    is_going?: boolean | null,
+    saved_event_date: string,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
     owner?: string | null,
   } | null,
 };
@@ -342,9 +363,13 @@ export type DeleteEventMutation = {
     favorite_count?: number | null,
     reply_count?: number | null,
     twitter_id?: string | null,
-    is_going: boolean,
+    is_going?: boolean | null,
+    saved_event_date: string,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
     owner?: string | null,
   } | null,
 };
@@ -371,9 +396,13 @@ export type GetEventQuery = {
     favorite_count?: number | null,
     reply_count?: number | null,
     twitter_id?: string | null,
-    is_going: boolean,
+    is_going?: boolean | null,
+    saved_event_date: string,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
     owner?: string | null,
   } | null,
 };
@@ -404,12 +433,58 @@ export type ListEventsQuery = {
       favorite_count?: number | null,
       reply_count?: number | null,
       twitter_id?: string | null,
-      is_going: boolean,
+      is_going?: boolean | null,
+      saved_event_date: string,
       createdAt: string,
       updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
       owner?: string | null,
     } | null >,
     nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
+export type SyncEventsQueryVariables = {
+  filter?: ModelEventFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+  lastSync?: number | null,
+};
+
+export type SyncEventsQuery = {
+  syncEvents?:  {
+    __typename: "ModelEventConnection",
+    items:  Array< {
+      __typename: "Event",
+      id: string,
+      event_date: string,
+      event_link: string,
+      event_title: string,
+      event_location: string,
+      is_local: boolean,
+      is_tweet_event: boolean,
+      is_in_state: boolean,
+      is_event_date_available: boolean,
+      url: string,
+      source: string,
+      retweet_count?: number | null,
+      favorite_count?: number | null,
+      reply_count?: number | null,
+      twitter_id?: string | null,
+      is_going?: boolean | null,
+      saved_event_date: string,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      owner?: string | null,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
   } | null,
 };
 
@@ -436,9 +511,13 @@ export type OnCreateEventSubscription = {
     favorite_count?: number | null,
     reply_count?: number | null,
     twitter_id?: string | null,
-    is_going: boolean,
+    is_going?: boolean | null,
+    saved_event_date: string,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
     owner?: string | null,
   } | null,
 };
@@ -466,9 +545,13 @@ export type OnUpdateEventSubscription = {
     favorite_count?: number | null,
     reply_count?: number | null,
     twitter_id?: string | null,
-    is_going: boolean,
+    is_going?: boolean | null,
+    saved_event_date: string,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
     owner?: string | null,
   } | null,
 };
@@ -496,9 +579,13 @@ export type OnDeleteEventSubscription = {
     favorite_count?: number | null,
     reply_count?: number | null,
     twitter_id?: string | null,
-    is_going: boolean,
+    is_going?: boolean | null,
+    saved_event_date: string,
     createdAt: string,
     updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
     owner?: string | null,
   } | null,
 };

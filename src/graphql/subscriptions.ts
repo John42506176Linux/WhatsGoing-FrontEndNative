@@ -24,8 +24,12 @@ export const onCreateEvent = /* GraphQL */ `
       reply_count
       twitter_id
       is_going
+      saved_event_date
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
       owner
     }
   }
@@ -52,8 +56,12 @@ export const onUpdateEvent = /* GraphQL */ `
       reply_count
       twitter_id
       is_going
+      saved_event_date
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
       owner
     }
   }
@@ -80,8 +88,12 @@ export const onDeleteEvent = /* GraphQL */ `
       reply_count
       twitter_id
       is_going
+      saved_event_date
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
       owner
     }
   }

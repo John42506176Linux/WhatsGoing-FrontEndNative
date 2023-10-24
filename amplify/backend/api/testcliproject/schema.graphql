@@ -1,6 +1,6 @@
 # This "input" configures a global authorization rule to enable public access to
 
-type Event @model @auth(rules: [{ allow: owner }]) {
+type Event @model @auth(rules: [{ allow: owner, operations: [create, read, update, delete] }]) {
     id: ID!
     event_date: String!
     event_link: String!
@@ -16,5 +16,6 @@ type Event @model @auth(rules: [{ allow: owner }]) {
     favorite_count: Int
     reply_count: Int
     twitter_id: String
-    is_going: Boolean!
+    is_going: Boolean
+    saved_event_date: String!
 }

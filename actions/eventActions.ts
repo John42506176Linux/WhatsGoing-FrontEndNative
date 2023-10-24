@@ -1,6 +1,7 @@
 import * as ActionTypes from './actionTypes';
 import { getCurrentDate } from '../utilities/utilities';
 import { REACT_APP_BACKEND_URL } from "@env";
+import {Event} from '../models/event';
 
 interface FetchEventRequestAction {
   type: typeof ActionTypes.FETCH_EVENT_REQUEST;
@@ -28,7 +29,6 @@ interface FetchEventServerError {
   type: typeof ActionTypes.FETCH_EVENT_SERVER_ERROR,
   payload: string,
 }
-
 
 export type EventActionTypes = FetchEventRequestAction | FetchEventSuccessAction | FetchEventFailureAction | FetchEventTimeout | FetchEventConnectionError | FetchEventServerError;
 

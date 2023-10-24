@@ -6,10 +6,10 @@ import bgImage from '../assets/event_mobile_app_background_contrast.png';
 import googleLogo from '../assets/googleLogo.png';
 import {StackNavigationProp} from '@react-navigation/stack';
 import { connect } from 'react-redux';
-import { getUser, listenAuthEvents } from '../actions/userActions';
+import { getUser, listenAuthEvents } from '../../actions/userActions';
 
 type RootStackParamList = {
-    "Home": undefined;
+    "Home": any;
     // add other screens here
 };
 type EventDetailsScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Login'>;

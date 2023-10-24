@@ -4,7 +4,11 @@ import { View, Button, Linking, StyleSheet} from 'react-native';
 import TwitterPreview from 'react-native-twitter-preview';
 import { FAB } from '@rneui/themed';
 
-const EventView = ({ route }) => {
+interface Props {
+  route : any;
+}
+
+const EventView: React.FC<Props> = ({ route }) => {
   const { event } = route.params;
 
   return (

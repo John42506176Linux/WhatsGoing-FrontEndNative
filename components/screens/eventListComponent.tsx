@@ -1,10 +1,11 @@
 import React, { useEffect,  useState, useCallback } from 'react';
 import { FlatList, View, Text, Button, ActivityIndicator,StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
-import { fetchEvent } from '../actions/eventActions';
-import { getLocation } from '../actions/locationActions';
-import EventComponent from '../components/eventComponent';
-import { Event } from '../models/event';
+import { fetchEvent } from '../../actions/eventActions';
+import EventComponent from '../eventComponent';
+import { Event } from '../../models/event';
+import SavedErrorComponent from '../popUps/savedEventErrorComponent';
+import LocationDisplay from '../locationComponent';
 import {StackNavigationProp} from '@react-navigation/stack';
 
 type RootStackParamList = {
@@ -18,27 +19,23 @@ interface Props {
   event_loading: boolean;
   event_data: any;
   event_error: string | null;
-  location_loading: boolean;
-  location_data: any;
-  location_error: string | null;
+  location: any;
   categories: string[];
   fetchEvent: (userLocation: string, event_preferences: string[]) => void;
-  getLocation: () => void;
 }
 
 const EventComponentList: React.FC<Props> = ({ navigation, 
-  event_loading, event_data, event_error, 
-  location_data, location_loading, location_error, categories,
-  fetchEvent, getLocation }) => {
+  event_loading, event_data, event_error,
+  location,  categories,
+  fetchEvent}) => {
 
-  const handlePress = useCallback(() => {
-    const eventId = 123; // Replace with the actual event ID
-    fetchEvent(location_data, categories);
-  }, [fetchEvent]);
   useEffect(() => {
-    fetchEvent(location_data, categories);
-    getLocation();
-  }, [fetchEvent, getLocation]);
+    fetchEvent(location, categories);
+  }, [fetchEvent]);
+
+  const handleFetch = useCallback(() => {
+    fetchEvent(location, categories);
+  }, [fetchEvent]);
 
   const handleEventPress = (event: Event) => {
     navigation.navigate('Event Details', {
@@ -51,17 +48,16 @@ const EventComponentList: React.FC<Props> = ({ navigation,
         <ActivityIndicator size="large" color="#0000ff" />
       ) : event_error ? (
         <>
-          <Button title="Fetch New Tweets" onPress={handlePress} />
+          <Button title="Fetch New Tweets" onPress={handleFetch} />
           <Text>Error: {event_error}</Text>
         </>
       ) : (
         <View style={styles.top_container}>
           <Text style={{ ...styles.header, textAlign: 'center' }}>Tech Events happening in San Francisco</Text>
           <View style={styles.buttonContainer}>
-            <Button title="Reload Tweets" onPress={handlePress} />
+            <Button title="Reload Tweets" onPress={handleFetch} />
           </View>
           <Text style={styles.header}>Tweets</Text>
-          <Text>Location:{location_data}</Text>
           <FlatList
             data={event_data}
             renderItem={({ item }) => {
@@ -73,6 +69,8 @@ const EventComponentList: React.FC<Props> = ({ navigation,
             }}
             keyExtractor={(item, index) => index.toString()}
           />
+        < LocationDisplay />
+        <SavedErrorComponent />
         </View>
       )}
     </View>
@@ -106,16 +104,13 @@ const mapStateToProps = (state: any) => {
     event_data: state.events.data,
     event_loading: state.events.loading,
     event_error: state.events.error,
-    location_data: state.location.data,
-    location_loading: state.location.loading,
-    location_error: state.location.error,
+    location: state.location.data,
     categories: state.categories.selectedCategories,
   });
 }
 
 const mapDispatchToProps = {
   fetchEvent,
-  getLocation,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(EventComponentList);
