@@ -1,4 +1,4 @@
-import { Auth, Hub } from 'aws-amplify';
+import { Auth, DataStore, Hub } from 'aws-amplify';
 import { Dispatch } from 'redux';
 import {
   USER_SIGN_IN,
@@ -8,7 +8,10 @@ import {
   GET_USER_SUCCESS,
   GET_USER_FAILURE,
 } from './actionTypes';
-import { User } from '../models/user'
+import { User } from '../models/user';
+import { User as UserAPI } from '../src/models/';
+import { categories } from '../constants/categories_constants';
+
 
 export const userSignIn = () => ({
   type: USER_SIGN_IN,
@@ -38,12 +41,18 @@ export const getUserFailure = (error: string) => ({
 });
 
 export const listenAuthEvents = () => {
-  return (dispatch: Dispatch) => {
-    Hub.listen("auth", ({ payload: { event, data } }) => {
+  return async (dispatch: Dispatch) => {
+    Hub.listen("auth", async ({ payload: { event, data } }) =>  {
       switch (event) {
         case "signIn":
           dispatch(userSignIn());
           break;
+        case 'signUp':
+          await DataStore.save(new UserAPI(
+            {
+              categories: [],
+            }
+          ));
         case "signOut":
           dispatch(userSignOut());
           break;

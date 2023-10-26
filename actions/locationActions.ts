@@ -8,6 +8,8 @@ import Geocoder from 'react-native-geocoding';
 import { REACT_APP_MAP_API_KEY } from '@env';
 import {PermissionsAndroid} from 'react-native';
 
+// TODO: Console.error is temporary, Replace with logging
+
 Geocoder.init(REACT_APP_MAP_API_KEY);
 
 export const getLocationRequest = () => ({
@@ -49,7 +51,6 @@ export const getLocation = () => {
             const city = addressComponents.find(component => component.types.includes('locality'))?.long_name;
             const state = addressComponents.find(component => component.types.includes('administrative_area_level_1'))?.short_name;
             const formattedAddress = `${city}, ${state}`;   
-            console.log(formattedAddress);         
             dispatch(getLocationSuccess(formattedAddress))
           },
           error => {
@@ -63,7 +64,7 @@ export const getLocation = () => {
         console.error('You cannot use Geolocation');
       }
     } catch (error: any) {
-      console.error(error);
+      console.error(error); 
       dispatch(getLocationFailure(error.message));
     }
   };

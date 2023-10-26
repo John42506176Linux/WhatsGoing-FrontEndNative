@@ -1,5 +1,9 @@
 import { Event as EventAPI } from '../src/models/index';
+import uuid from 'react-native-uuid';
+
+
 export class Event {
+    id: string;
     event_date: string;
     event_link: string;
     event_title: string;
@@ -14,10 +18,14 @@ export class Event {
     favorite_count?: number;
     reply_count?: number;
     twitter_id?: string;
+    is_saved?: boolean;
     
 
     constructor({event_date, event_link, event_title, event_location, is_local, is_tweet_event, is_in_state, is_event_date_available, url, source, retweet_count, favorite_count, reply_count, twitter_id}:
-        { event_date: string, event_link: string, event_title: string, event_location: string, is_local: boolean, is_tweet_event: boolean, is_in_state: boolean, is_event_date_available: boolean, url: string, source: string, retweet_count?: number, favorite_count?: number, reply_count?: number, twitter_id?: string }) {
+        { event_date: string, event_link: string, event_title: string, event_location: string, is_local: boolean, is_tweet_event: boolean, is_in_state: boolean, is_event_date_available: boolean, url: string, 
+            source: string, retweet_count?: number, favorite_count?: number, reply_count?: number, twitter_id?: string }) {
+        this.id = uuid.v4().toString();
+        this.is_saved = false;
         this.event_date = event_date;
         this.event_link = event_link;
         this.event_title = event_title;
@@ -43,6 +51,7 @@ export class Event {
 
     toJSON() {
         return {
+            id: this.id,
             event_date: this.event_date,
             event_link: this.event_link,
             event_title: this.event_title,
@@ -57,6 +66,7 @@ export class Event {
             favorite_count: this.favorite_count,
             reply_count: this.reply_count,
             twitter_id: this.twitter_id,
+            is_saved: this.is_saved,
         };
     }
 
@@ -76,6 +86,7 @@ export class SavedEvent extends Event {
         
         super(eventProps);
         this.saved_event_time = saved_event_time;
+        this.is_saved = true;
     }
 
     static fromJSON(json: any): SavedEvent {

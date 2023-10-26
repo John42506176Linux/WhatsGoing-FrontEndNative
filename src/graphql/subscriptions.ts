@@ -25,12 +25,12 @@ export const onCreateEvent = /* GraphQL */ `
       twitter_id
       is_going
       saved_event_date
+      owner
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      owner
     }
   }
 `;
@@ -57,12 +57,12 @@ export const onUpdateEvent = /* GraphQL */ `
       twitter_id
       is_going
       saved_event_date
+      owner
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
-      owner
     }
   }
 `;
@@ -89,12 +89,159 @@ export const onDeleteEvent = /* GraphQL */ `
       twitter_id
       is_going
       saved_event_date
+      owner
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+    }
+  }
+`;
+export const onCreateUser = /* GraphQL */ `
+  subscription OnCreateUser(
+    $filter: ModelSubscriptionUserFilterInput
+    $owner: String
+  ) {
+    onCreateUser(filter: $filter, owner: $owner) {
+      id
+      categories {
+        items {
+          id
+          name
+          owner
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          userCategoriesId
+        }
+        nextToken
+        startedAt
+      }
       owner
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onUpdateUser = /* GraphQL */ `
+  subscription OnUpdateUser(
+    $filter: ModelSubscriptionUserFilterInput
+    $owner: String
+  ) {
+    onUpdateUser(filter: $filter, owner: $owner) {
+      id
+      categories {
+        items {
+          id
+          name
+          owner
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          userCategoriesId
+        }
+        nextToken
+        startedAt
+      }
+      owner
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onDeleteUser = /* GraphQL */ `
+  subscription OnDeleteUser(
+    $filter: ModelSubscriptionUserFilterInput
+    $owner: String
+  ) {
+    onDeleteUser(filter: $filter, owner: $owner) {
+      id
+      categories {
+        items {
+          id
+          name
+          owner
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          userCategoriesId
+        }
+        nextToken
+        startedAt
+      }
+      owner
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onCreateCategory = /* GraphQL */ `
+  subscription OnCreateCategory(
+    $filter: ModelSubscriptionCategoryFilterInput
+    $owner: String
+  ) {
+    onCreateCategory(filter: $filter, owner: $owner) {
+      id
+      name
+      owner
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      userCategoriesId
+    }
+  }
+`;
+export const onUpdateCategory = /* GraphQL */ `
+  subscription OnUpdateCategory(
+    $filter: ModelSubscriptionCategoryFilterInput
+    $owner: String
+  ) {
+    onUpdateCategory(filter: $filter, owner: $owner) {
+      id
+      name
+      owner
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      userCategoriesId
+    }
+  }
+`;
+export const onDeleteCategory = /* GraphQL */ `
+  subscription OnDeleteCategory(
+    $filter: ModelSubscriptionCategoryFilterInput
+    $owner: String
+  ) {
+    onDeleteCategory(filter: $filter, owner: $owner) {
+      id
+      name
+      owner
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      userCategoriesId
     }
   }
 `;

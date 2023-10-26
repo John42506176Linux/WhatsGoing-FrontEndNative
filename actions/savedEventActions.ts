@@ -1,6 +1,4 @@
-import {API, DataStore, graphqlOperation} from 'aws-amplify';
-import {createEvent} from '../src/graphql/mutations';
-import {listEvents} from '../src/graphql/queries';
+import { DataStore } from 'aws-amplify';
 import { SavedEvent,Event } from '../models/event';
 import { Event as EventAPI } from '../src/models/';
 import { getCurrentDate } from '../utilities/utilities';
@@ -13,6 +11,7 @@ import {
   LIST_SAVED_EVENTS_FAILURE,
 } from './actionTypes';
 
+// TODO: Console.error is temporary, Replace with logging
 
 interface AddSavedEventRequestAction {
   type: typeof ADD_SAVED_EVENT_REQUEST;
@@ -75,7 +74,7 @@ export const listSavedEventsRequest = (): ListSavedEventsRequestAction => ({
   type: LIST_SAVED_EVENTS_REQUEST,
 });
 
-export const listSavedEventsSuccess = (savedEvents: SavedEvent[], timestamp: number): ListSavedEventsSuccessAction => ({
+export const listSavedEventsSuccess = (savedEvents: any, timestamp: number): ListSavedEventsSuccessAction => ({
   type: LIST_SAVED_EVENTS_SUCCESS,
   payload: savedEvents,
   timestamp: timestamp,
@@ -108,11 +107,10 @@ export const listSavedEvents = () => {
     dispatch(listSavedEventsRequest());
     try {
       const response = await DataStore.query(EventAPI);
-      console.log("Response: ", response);
       const savedEvents = response.map((event) => {
-        console.log("Event: ", event);
+        return SavedEvent.fromJSON(event).toJSON();
       });
-      dispatch(listSavedEventsSuccess([],Date.now()));
+      dispatch(listSavedEventsSuccess(savedEvents,Date.now()));
     } catch (error:any) {
       dispatch(listSavedEventsFailure(error.message,Date.now()));
     }

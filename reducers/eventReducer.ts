@@ -28,6 +28,13 @@ const eventReducer = (state = initialState, action: EventActionTypes): EventStat
       return { ...state, loading: false, error: 'Error connecting to the server' };
     case ActionTypes.FETCH_EVENT_SERVER_ERROR:
       return { ...state, loading: false, error: action.payload };
+    case ActionTypes.UPDATE_EVENT_SAVED:
+      return {
+        ...state,
+        data: state.data.map((event: { id: string; is_saved: boolean }) => 
+          event.id === action.payload.eventId ? { ...event, is_saved: action.payload.isSaved } : event
+        ),
+      };
     default:
       return state;
   }

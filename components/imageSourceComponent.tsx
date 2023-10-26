@@ -1,29 +1,20 @@
-
 import React from 'react';
-import { Image, StyleSheet } from 'react-native';
+import { Image } from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 interface Props {
   source: string;
 }
 
-const CustomImageComponent: React.FC<Props> = ({ source }) => {
-  let image;
-  switch(source) {
+const ImageSourceComponent: React.FC<Props> = ({ source }) => {
+  switch (source) {
     case 'Twitter':
-      image = require('../assets/twitter.png');
-      break;
-    // Add more cases as needed
+      return <Ionicons name="logo-twitter" size={30} color="white" />;
+    case 'meetup':
+      return <Ionicons name="logo-meetup" size={30} />;
     default:
-      image = require('../assets/default.png');
+      return <Image source={require('../assets/default.png')} />;
   }
-  return <Image source={image} style={styles.image} />;
 };
 
-const styles = StyleSheet.create({
-  image: {
-    width: 30,
-    height: 30,
-  },
-});
-
-export default CustomImageComponent;
+export default ImageSourceComponent;

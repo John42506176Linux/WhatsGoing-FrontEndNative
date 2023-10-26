@@ -1,7 +1,7 @@
 import React, { useEffect,  useState, useCallback } from 'react';
 import { FlatList, View, Text, Button, ActivityIndicator,StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
-import { fetchEvent } from '../../actions/eventActions';
+import { fetchEvent,updateEventSaved } from '../../actions/eventActions';
 import EventComponent from '../eventComponent';
 import { Event } from '../../models/event';
 import SavedErrorComponent from '../popUps/savedEventErrorComponent';
@@ -33,7 +33,7 @@ const EventComponentList: React.FC<Props> = ({ navigation,
     fetchEvent(location, categories);
   }, [fetchEvent]);
 
-  const handleFetch = useCallback(() => {
+  const handleFetch = useCallback(() => { // # TODO: see if this is needed 
     fetchEvent(location, categories);
   }, [fetchEvent]);
 
@@ -53,7 +53,7 @@ const EventComponentList: React.FC<Props> = ({ navigation,
         </>
       ) : (
         <View style={styles.top_container}>
-          <Text style={{ ...styles.header, textAlign: 'center' }}>Tech Events happening in San Francisco</Text>
+          <Text style={{ ...styles.header, textAlign: 'center' }}>{categories[0]} Events happening in {location}</Text>
           <View style={styles.buttonContainer}>
             <Button title="Reload Tweets" onPress={handleFetch} />
           </View>
@@ -62,7 +62,7 @@ const EventComponentList: React.FC<Props> = ({ navigation,
             data={event_data}
             renderItem={({ item }) => {
               if (item.is_in_state) {
-                return <EventComponent event={item} onPress={() => handleEventPress(item)} />;
+                return <EventComponent showHeartIcon={true} event={item} onPress={() => handleEventPress(item)} />;
               } else {
                 return null;
               }
@@ -86,6 +86,7 @@ const styles = StyleSheet.create({
     top_container: {
       flex: 1,
       paddingTop: 50,
+      width: '90%',
     },
     header : {
       fontSize: 20,

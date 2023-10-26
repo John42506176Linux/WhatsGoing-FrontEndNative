@@ -15,8 +15,8 @@ interface Props {
   
 const LocationDisplay: React.FC<Props> = ({ location_data, location_loading, location_error, getLocation }) => {
     useEffect(() => {
-        getLocation();
-        console.log("Location: ", location_data);
+        if(!location_data)
+            getLocation();
     }, [getLocation]);
 
     if (location_loading) {

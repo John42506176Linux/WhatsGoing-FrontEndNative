@@ -30,7 +30,12 @@ interface FetchEventServerError {
   payload: string,
 }
 
-export type EventActionTypes = FetchEventRequestAction | FetchEventSuccessAction | FetchEventFailureAction | FetchEventTimeout | FetchEventConnectionError | FetchEventServerError;
+interface UpdateEventSavedAction {
+  type: typeof ActionTypes.UPDATE_EVENT_SAVED,
+  payload: { eventId: string, isSaved: boolean },
+}
+
+export type EventActionTypes = FetchEventRequestAction | FetchEventSuccessAction | FetchEventFailureAction | FetchEventTimeout | FetchEventConnectionError | FetchEventServerError | UpdateEventSavedAction;
 
 export const fetchEventRequest = (): FetchEventRequestAction => ({
   type: ActionTypes.FETCH_EVENT_REQUEST,
@@ -46,6 +51,11 @@ export const fetchEventFailure = (error: string): FetchEventFailureAction => ({
   payload: error,
 });
 
+export const updateEventSavedSuccess = (eventId: string, isSaved: boolean): UpdateEventSavedAction => ({
+  type: ActionTypes.UPDATE_EVENT_SAVED,
+  payload: { eventId, isSaved },
+});
+
 export const fetchEventTimeout = (): FetchEventTimeout => ({
   type: ActionTypes.FETCH_EVENT_TIMEOUT
 });
@@ -59,6 +69,11 @@ export const fetchEventServerError = (error: any): FetchEventServerError => ({
   payload: error,
 });
 
+export const updateEventSaved = (eventId: string, isSaved: boolean) => {
+  return async (dispatch: any) => {
+    dispatch(updateEventSavedSuccess(eventId, isSaved));
+  };
+}
 
 export const fetchEvent =  (userLocation: string, event_preferences: string[]) => {
   return async (dispatch: any) => {
@@ -84,6 +99,9 @@ export const fetchEvent =  (userLocation: string, event_preferences: string[]) =
       const data = await response.json();
       if (response.status !== 200) throw new Error(`Server Error:${data['detail']}`);
       let jsonArray = JSON.parse(data['response']);
+      jsonArray = jsonArray.map((event: any) => {
+        return new Event(event).toJSON();
+      });
       dispatch(fetchEventSuccess(jsonArray));
     } catch (error: any) {
       if (error.name === 'TypeError') {

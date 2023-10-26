@@ -5,21 +5,23 @@ import CustomImageComponent from './imageSourceComponent';
 import { formatDate } from '../utilities/utilities';
 import { connect } from 'react-redux'; 
 import { addSavedEvent } from '../actions/savedEventActions'; 
-import Icon from 'react-native-vector-icons/FontAwesome'; 
-
+import Icon from 'react-native-vector-icons/Ionicons';
+import { updateEventSaved } from '../actions/eventActions';
 
 interface Props {
   event: Event;
   onPress: () => void;
-  addSavedEvent: (event: Event) => Promise<void>; // Add this line
+  addSavedEvent: (event: Event) => Promise<void>;
+  updateEventSaved: (eventId: string, isSaved: boolean) => void;
+  showHeartIcon: boolean;
 }
 
-const EventComponent: React.FC<Props> = ({ event, onPress, addSavedEvent }) => {
-
+const EventComponent: React.FC<Props> = ({ event, onPress, addSavedEvent, updateEventSaved, showHeartIcon}) => {
   
   const handlePress = useCallback(() => {
     addSavedEvent(Event.fromJSON(event));
-  }, [addSavedEvent]);
+    updateEventSaved(event.id, !event.is_saved);
+  }, [addSavedEvent,updateEventSaved]);
 
   return (
     <TouchableOpacity onPress={onPress}>
@@ -41,9 +43,12 @@ const EventComponent: React.FC<Props> = ({ event, onPress, addSavedEvent }) => {
             <Text>{event.retweet_count}</Text>
           </View>
         </View>
-        <TouchableOpacity onPress={handlePress} style={styles.heartIcon}>
-            <Icon name="heart" size={30} color="#900" />
+        { showHeartIcon && (
+          <TouchableOpacity onPress={handlePress} style={styles.heartIcon}>
+          {event.is_saved ? <Icon name="heart" size={30} color="#FF0000" /> : <Icon name="heart-outline" size={30} color="#FF0000" />}
         </TouchableOpacity>
+        )}
+        
       </View>
       </View>
     </TouchableOpacity>
@@ -59,6 +64,7 @@ const styles = StyleSheet.create({
     elevation: 3, // for Android
     shadowColor: 'black', // for iOS
     shadowOffset: { width: 0, height: 1 },
+    paddingLeft: '5%',
   },
   cardContent: {
     padding: 10,
@@ -106,6 +112,7 @@ const styles = StyleSheet.create({
 
 const mapDispatchToProps = {
   addSavedEvent,
+  updateEventSaved,
 };
 
 export default connect(null,mapDispatchToProps)(EventComponent);

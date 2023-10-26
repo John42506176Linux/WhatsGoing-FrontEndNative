@@ -3,7 +3,8 @@ import { Provider } from 'react-redux';
 import { TouchableOpacity, Text, StyleSheet} from 'react-native';
 import store from './store/store';
 import EventComponentList from './components/screens/eventListComponent';
-import EventView from './components/eventViewComponent';
+import EventView from './components/screens/eventViewComponent';
+import BottomTabNavigator from './components/bottomNavBarComponent';
 import LoginComponent from './components/screens/loginComponent';
 import CategorySelection from './components/screens/categoryComponent';
 import { NavigationContainer } from '@react-navigation/native';
@@ -36,7 +37,7 @@ const App: React.FC = () => {
     headerTitleAlign: 'center',
   }}>
           <Stack.Screen name="Login" component={LoginComponent} options={{ headerShown: false }}/>
-          <Stack.Screen name="Home" component={EventComponentList} />
+          <Stack.Screen name="Home" component={BottomTabNavigator} options={{ headerShown: false }}/>
           <Stack.Screen name="Event Details">
             {(props) => <EventView {...props}/>}
           </Stack.Screen>

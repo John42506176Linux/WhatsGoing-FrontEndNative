@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { CognitoHostedUIIdentityProvider } from "@aws-amplify/auth";
 import { Amplify, Auth, Hub } from "aws-amplify";
 import { View, Button, Text, StyleSheet, TouchableOpacity, Image, ImageBackground } from 'react-native';
-import bgImage from '../assets/event_mobile_app_background_contrast.png';
-import googleLogo from '../assets/googleLogo.png';
+import bgImage from '../../assets/event_mobile_app_background_contrast.png';
+import googleLogo from '../../assets/googleLogo.png';
 import {StackNavigationProp} from '@react-navigation/stack';
 import { connect } from 'react-redux';
 import { getUser, listenAuthEvents } from '../../actions/userActions';
@@ -25,9 +25,8 @@ interface Props {
 
 const LoginComponent: React.FC<Props> = ({ navigation, user, customState, getUser, listenAuthEvents }) => {
   useEffect(() => {
-    const unsubscribe = listenAuthEvents();
+    listenAuthEvents();
     getUser();
-    return unsubscribe;
   }, [getUser, listenAuthEvents]);
   
   useEffect(() => {
@@ -44,7 +43,7 @@ const LoginComponent: React.FC<Props> = ({ navigation, user, customState, getUse
     </View>
 
     <View style={{ flex: 2, justifyContent: 'flex-end', marginLeft: 40, marginRight: 40 }}>
-      <TouchableOpacity style={styles.googleButton} onPress={() => Auth.federatedSignIn({ provider: CognitoHostedUIIdentityProvider.Google }).then(user => console.log("User: ", user)).catch(err => console.log("Error: ", err))}>
+      <TouchableOpacity style={styles.googleButton} onPress={() => Auth.federatedSignIn({ provider: CognitoHostedUIIdentityProvider.Google })}>
         <Image style={styles.googleLogo} source={googleLogo} />
         <Text style={styles.googleButtonText}>Sign in with Google</Text>
       </TouchableOpacity>
