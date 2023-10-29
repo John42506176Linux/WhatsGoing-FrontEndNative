@@ -106,7 +106,7 @@ export const listSavedEvents = () => {
   return async (dispatch: any) => {
     dispatch(listSavedEventsRequest());
     try {
-      const response = await DataStore.query(EventAPI);
+      const response = await DataStore.observeQuery(EventAPI);
       const savedEvents = response.map((event) => {
         return SavedEvent.fromJSON(event).toJSON();
       });

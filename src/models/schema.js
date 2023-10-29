@@ -184,19 +184,12 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "categories": {
-                    "name": "categories",
-                    "isArray": true,
-                    "type": {
-                        "model": "Category"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true,
-                    "association": {
-                        "connectionType": "HAS_MANY",
-                        "associatedWith": "userCategoriesId"
-                    }
+                "username": {
+                    "name": "username",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
                 },
                 "owner": {
                     "name": "owner",
@@ -228,6 +221,14 @@ export const schema = {
                 {
                     "type": "model",
                     "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "fields": [
+                            "username"
+                        ]
+                    }
                 },
                 {
                     "type": "auth",
@@ -289,13 +290,6 @@ export const schema = {
                     "isRequired": false,
                     "attributes": [],
                     "isReadOnly": true
-                },
-                "userCategoriesId": {
-                    "name": "userCategoriesId",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": false,
-                    "attributes": []
                 }
             },
             "syncable": true,
@@ -304,15 +298,6 @@ export const schema = {
                 {
                     "type": "model",
                     "properties": {}
-                },
-                {
-                    "type": "key",
-                    "properties": {
-                        "name": "gsi-User.categories",
-                        "fields": [
-                            "userCategoriesId"
-                        ]
-                    }
                 },
                 {
                     "type": "auth",
@@ -338,6 +323,6 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "codegenVersion": "3.4.3",
-    "version": "9c9c11d0c6f5b5d46db382ff4dee65ad"
+    "codegenVersion": "3.4.4",
+    "version": "b087ac4df17b23fa18276822d2f2585f"
 };

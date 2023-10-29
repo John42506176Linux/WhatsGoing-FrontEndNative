@@ -1,6 +1,6 @@
 import { ModelInit, MutableModel } from "@aws-amplify/datastore";
 // @ts-ignore
-import { LazyLoading, LazyLoadingDisabled, AsyncCollection } from "@aws-amplify/datastore";
+import { LazyLoading, LazyLoadingDisabled } from "@aws-amplify/datastore";
 
 type EventMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
@@ -68,7 +68,7 @@ export declare const Event: (new (init: ModelInit<Event, EventMetaData>) => Even
 
 type EagerUser = {
   readonly id: string;
-  readonly categories?: (Category | null)[] | null;
+  readonly username: string;
   readonly owner?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
@@ -76,7 +76,7 @@ type EagerUser = {
 
 type LazyUser = {
   readonly id: string;
-  readonly categories: AsyncCollection<Category>;
+  readonly username: string;
   readonly owner?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
@@ -94,7 +94,6 @@ type EagerCategory = {
   readonly owner?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-  readonly userCategoriesId?: string | null;
 }
 
 type LazyCategory = {
@@ -103,7 +102,6 @@ type LazyCategory = {
   readonly owner?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
-  readonly userCategoriesId?: string | null;
 }
 
 export declare type Category = LazyLoading extends LazyLoadingDisabled ? EagerCategory : LazyCategory

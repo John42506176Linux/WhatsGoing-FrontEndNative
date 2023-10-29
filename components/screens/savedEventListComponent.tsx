@@ -10,7 +10,6 @@ import { StackNavigationProp } from '@react-navigation/stack';
 
 type RootStackParamList = {
     "Event Details": { event: Event };
-    // add other screens here
 };
 
 type EventDetailsScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Event Details'>;
@@ -53,7 +52,6 @@ const EventComponentList: React.FC<Props> = ({ navigation,
             ) : (
                 <View style={styles.top_container}>
                     <Text style={{ ...styles.header, textAlign: 'center' }}>Saved Events </Text>
-                    <Text style={styles.header}>Tweets</Text>
                     <FlatList
                         data={saved_event_data}
                         renderItem={({ item }) => {

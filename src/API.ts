@@ -45,6 +45,7 @@ export type ModelEventConditionInput = {
   and?: Array< ModelEventConditionInput | null > | null,
   or?: Array< ModelEventConditionInput | null > | null,
   not?: ModelEventConditionInput | null,
+  _deleted?: ModelBooleanInput | null,
 };
 
 export type ModelStringInput = {
@@ -161,7 +162,7 @@ export type DeleteEventInput = {
 };
 
 export type CreateUserInput = {
-  id?: string | null,
+  username: string,
   owner?: string | null,
   _version?: number | null,
 };
@@ -171,12 +172,12 @@ export type ModelUserConditionInput = {
   and?: Array< ModelUserConditionInput | null > | null,
   or?: Array< ModelUserConditionInput | null > | null,
   not?: ModelUserConditionInput | null,
+  _deleted?: ModelBooleanInput | null,
 };
 
 export type User = {
   __typename: "User",
-  id: string,
-  categories?: ModelCategoryConnection | null,
+  username: string,
   owner?: string | null,
   createdAt: string,
   updatedAt: string,
@@ -185,11 +186,31 @@ export type User = {
   _lastChangedAt: number,
 };
 
-export type ModelCategoryConnection = {
-  __typename: "ModelCategoryConnection",
-  items:  Array<Category | null >,
-  nextToken?: string | null,
-  startedAt?: number | null,
+export type UpdateUserInput = {
+  username: string,
+  owner?: string | null,
+  _version?: number | null,
+};
+
+export type DeleteUserInput = {
+  username: string,
+  _version?: number | null,
+};
+
+export type CreateCategoryInput = {
+  id?: string | null,
+  name: string,
+  owner?: string | null,
+  _version?: number | null,
+};
+
+export type ModelCategoryConditionInput = {
+  name?: ModelStringInput | null,
+  owner?: ModelStringInput | null,
+  and?: Array< ModelCategoryConditionInput | null > | null,
+  or?: Array< ModelCategoryConditionInput | null > | null,
+  not?: ModelCategoryConditionInput | null,
+  _deleted?: ModelBooleanInput | null,
 };
 
 export type Category = {
@@ -202,51 +223,6 @@ export type Category = {
   _version: number,
   _deleted?: boolean | null,
   _lastChangedAt: number,
-  userCategoriesId?: string | null,
-};
-
-export type UpdateUserInput = {
-  id: string,
-  owner?: string | null,
-  _version?: number | null,
-};
-
-export type DeleteUserInput = {
-  id: string,
-  _version?: number | null,
-};
-
-export type CreateCategoryInput = {
-  id?: string | null,
-  name: string,
-  owner?: string | null,
-  _version?: number | null,
-  userCategoriesId?: string | null,
-};
-
-export type ModelCategoryConditionInput = {
-  name?: ModelStringInput | null,
-  owner?: ModelStringInput | null,
-  and?: Array< ModelCategoryConditionInput | null > | null,
-  or?: Array< ModelCategoryConditionInput | null > | null,
-  not?: ModelCategoryConditionInput | null,
-  userCategoriesId?: ModelIDInput | null,
-};
-
-export type ModelIDInput = {
-  ne?: string | null,
-  eq?: string | null,
-  le?: string | null,
-  lt?: string | null,
-  ge?: string | null,
-  gt?: string | null,
-  contains?: string | null,
-  notContains?: string | null,
-  between?: Array< string | null > | null,
-  beginsWith?: string | null,
-  attributeExists?: boolean | null,
-  attributeType?: ModelAttributeTypes | null,
-  size?: ModelSizeInput | null,
 };
 
 export type UpdateCategoryInput = {
@@ -254,7 +230,6 @@ export type UpdateCategoryInput = {
   name?: string | null,
   owner?: string | null,
   _version?: number | null,
-  userCategoriesId?: string | null,
 };
 
 export type DeleteCategoryInput = {
@@ -284,6 +259,23 @@ export type ModelEventFilterInput = {
   and?: Array< ModelEventFilterInput | null > | null,
   or?: Array< ModelEventFilterInput | null > | null,
   not?: ModelEventFilterInput | null,
+  _deleted?: ModelBooleanInput | null,
+};
+
+export type ModelIDInput = {
+  ne?: string | null,
+  eq?: string | null,
+  le?: string | null,
+  lt?: string | null,
+  ge?: string | null,
+  gt?: string | null,
+  contains?: string | null,
+  notContains?: string | null,
+  between?: Array< string | null > | null,
+  beginsWith?: string | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
+  size?: ModelSizeInput | null,
 };
 
 export type ModelEventConnection = {
@@ -294,12 +286,19 @@ export type ModelEventConnection = {
 };
 
 export type ModelUserFilterInput = {
-  id?: ModelIDInput | null,
+  username?: ModelIDInput | null,
   owner?: ModelStringInput | null,
   and?: Array< ModelUserFilterInput | null > | null,
   or?: Array< ModelUserFilterInput | null > | null,
   not?: ModelUserFilterInput | null,
+  _deleted?: ModelBooleanInput | null,
 };
+
+export enum ModelSortDirection {
+  ASC = "ASC",
+  DESC = "DESC",
+}
+
 
 export type ModelUserConnection = {
   __typename: "ModelUserConnection",
@@ -315,7 +314,14 @@ export type ModelCategoryFilterInput = {
   and?: Array< ModelCategoryFilterInput | null > | null,
   or?: Array< ModelCategoryFilterInput | null > | null,
   not?: ModelCategoryFilterInput | null,
-  userCategoriesId?: ModelIDInput | null,
+  _deleted?: ModelBooleanInput | null,
+};
+
+export type ModelCategoryConnection = {
+  __typename: "ModelCategoryConnection",
+  items:  Array<Category | null >,
+  nextToken?: string | null,
+  startedAt?: number | null,
 };
 
 export type ModelSubscriptionEventFilterInput = {
@@ -338,6 +344,7 @@ export type ModelSubscriptionEventFilterInput = {
   saved_event_date?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionEventFilterInput | null > | null,
   or?: Array< ModelSubscriptionEventFilterInput | null > | null,
+  _deleted?: ModelBooleanInput | null,
 };
 
 export type ModelSubscriptionIDInput = {
@@ -388,9 +395,10 @@ export type ModelSubscriptionIntInput = {
 };
 
 export type ModelSubscriptionUserFilterInput = {
-  id?: ModelSubscriptionIDInput | null,
+  username?: ModelSubscriptionIDInput | null,
   and?: Array< ModelSubscriptionUserFilterInput | null > | null,
   or?: Array< ModelSubscriptionUserFilterInput | null > | null,
+  _deleted?: ModelBooleanInput | null,
 };
 
 export type ModelSubscriptionCategoryFilterInput = {
@@ -398,6 +406,7 @@ export type ModelSubscriptionCategoryFilterInput = {
   name?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionCategoryFilterInput | null > | null,
   or?: Array< ModelSubscriptionCategoryFilterInput | null > | null,
+  _deleted?: ModelBooleanInput | null,
 };
 
 export type CreateEventMutationVariables = {
@@ -510,24 +519,7 @@ export type CreateUserMutationVariables = {
 export type CreateUserMutation = {
   createUser?:  {
     __typename: "User",
-    id: string,
-    categories?:  {
-      __typename: "ModelCategoryConnection",
-      items:  Array< {
-        __typename: "Category",
-        id: string,
-        name: string,
-        owner?: string | null,
-        createdAt: string,
-        updatedAt: string,
-        _version: number,
-        _deleted?: boolean | null,
-        _lastChangedAt: number,
-        userCategoriesId?: string | null,
-      } | null >,
-      nextToken?: string | null,
-      startedAt?: number | null,
-    } | null,
+    username: string,
     owner?: string | null,
     createdAt: string,
     updatedAt: string,
@@ -545,24 +537,7 @@ export type UpdateUserMutationVariables = {
 export type UpdateUserMutation = {
   updateUser?:  {
     __typename: "User",
-    id: string,
-    categories?:  {
-      __typename: "ModelCategoryConnection",
-      items:  Array< {
-        __typename: "Category",
-        id: string,
-        name: string,
-        owner?: string | null,
-        createdAt: string,
-        updatedAt: string,
-        _version: number,
-        _deleted?: boolean | null,
-        _lastChangedAt: number,
-        userCategoriesId?: string | null,
-      } | null >,
-      nextToken?: string | null,
-      startedAt?: number | null,
-    } | null,
+    username: string,
     owner?: string | null,
     createdAt: string,
     updatedAt: string,
@@ -580,24 +555,7 @@ export type DeleteUserMutationVariables = {
 export type DeleteUserMutation = {
   deleteUser?:  {
     __typename: "User",
-    id: string,
-    categories?:  {
-      __typename: "ModelCategoryConnection",
-      items:  Array< {
-        __typename: "Category",
-        id: string,
-        name: string,
-        owner?: string | null,
-        createdAt: string,
-        updatedAt: string,
-        _version: number,
-        _deleted?: boolean | null,
-        _lastChangedAt: number,
-        userCategoriesId?: string | null,
-      } | null >,
-      nextToken?: string | null,
-      startedAt?: number | null,
-    } | null,
+    username: string,
     owner?: string | null,
     createdAt: string,
     updatedAt: string,
@@ -623,7 +581,6 @@ export type CreateCategoryMutation = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
-    userCategoriesId?: string | null,
   } | null,
 };
 
@@ -643,7 +600,6 @@ export type UpdateCategoryMutation = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
-    userCategoriesId?: string | null,
   } | null,
 };
 
@@ -663,7 +619,6 @@ export type DeleteCategoryMutation = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
-    userCategoriesId?: string | null,
   } | null,
 };
 
@@ -782,30 +737,13 @@ export type SyncEventsQuery = {
 };
 
 export type GetUserQueryVariables = {
-  id: string,
+  username: string,
 };
 
 export type GetUserQuery = {
   getUser?:  {
     __typename: "User",
-    id: string,
-    categories?:  {
-      __typename: "ModelCategoryConnection",
-      items:  Array< {
-        __typename: "Category",
-        id: string,
-        name: string,
-        owner?: string | null,
-        createdAt: string,
-        updatedAt: string,
-        _version: number,
-        _deleted?: boolean | null,
-        _lastChangedAt: number,
-        userCategoriesId?: string | null,
-      } | null >,
-      nextToken?: string | null,
-      startedAt?: number | null,
-    } | null,
+    username: string,
     owner?: string | null,
     createdAt: string,
     updatedAt: string,
@@ -816,9 +754,11 @@ export type GetUserQuery = {
 };
 
 export type ListUsersQueryVariables = {
+  username?: string | null,
   filter?: ModelUserFilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
+  sortDirection?: ModelSortDirection | null,
 };
 
 export type ListUsersQuery = {
@@ -826,12 +766,7 @@ export type ListUsersQuery = {
     __typename: "ModelUserConnection",
     items:  Array< {
       __typename: "User",
-      id: string,
-      categories?:  {
-        __typename: "ModelCategoryConnection",
-        nextToken?: string | null,
-        startedAt?: number | null,
-      } | null,
+      username: string,
       owner?: string | null,
       createdAt: string,
       updatedAt: string,
@@ -856,12 +791,7 @@ export type SyncUsersQuery = {
     __typename: "ModelUserConnection",
     items:  Array< {
       __typename: "User",
-      id: string,
-      categories?:  {
-        __typename: "ModelCategoryConnection",
-        nextToken?: string | null,
-        startedAt?: number | null,
-      } | null,
+      username: string,
       owner?: string | null,
       createdAt: string,
       updatedAt: string,
@@ -889,7 +819,6 @@ export type GetCategoryQuery = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
-    userCategoriesId?: string | null,
   } | null,
 };
 
@@ -912,7 +841,6 @@ export type ListCategoriesQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userCategoriesId?: string | null,
     } | null >,
     nextToken?: string | null,
     startedAt?: number | null,
@@ -939,7 +867,6 @@ export type SyncCategoriesQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-      userCategoriesId?: string | null,
     } | null >,
     nextToken?: string | null,
     startedAt?: number | null,
@@ -1056,24 +983,7 @@ export type OnCreateUserSubscriptionVariables = {
 export type OnCreateUserSubscription = {
   onCreateUser?:  {
     __typename: "User",
-    id: string,
-    categories?:  {
-      __typename: "ModelCategoryConnection",
-      items:  Array< {
-        __typename: "Category",
-        id: string,
-        name: string,
-        owner?: string | null,
-        createdAt: string,
-        updatedAt: string,
-        _version: number,
-        _deleted?: boolean | null,
-        _lastChangedAt: number,
-        userCategoriesId?: string | null,
-      } | null >,
-      nextToken?: string | null,
-      startedAt?: number | null,
-    } | null,
+    username: string,
     owner?: string | null,
     createdAt: string,
     updatedAt: string,
@@ -1091,24 +1001,7 @@ export type OnUpdateUserSubscriptionVariables = {
 export type OnUpdateUserSubscription = {
   onUpdateUser?:  {
     __typename: "User",
-    id: string,
-    categories?:  {
-      __typename: "ModelCategoryConnection",
-      items:  Array< {
-        __typename: "Category",
-        id: string,
-        name: string,
-        owner?: string | null,
-        createdAt: string,
-        updatedAt: string,
-        _version: number,
-        _deleted?: boolean | null,
-        _lastChangedAt: number,
-        userCategoriesId?: string | null,
-      } | null >,
-      nextToken?: string | null,
-      startedAt?: number | null,
-    } | null,
+    username: string,
     owner?: string | null,
     createdAt: string,
     updatedAt: string,
@@ -1126,24 +1019,7 @@ export type OnDeleteUserSubscriptionVariables = {
 export type OnDeleteUserSubscription = {
   onDeleteUser?:  {
     __typename: "User",
-    id: string,
-    categories?:  {
-      __typename: "ModelCategoryConnection",
-      items:  Array< {
-        __typename: "Category",
-        id: string,
-        name: string,
-        owner?: string | null,
-        createdAt: string,
-        updatedAt: string,
-        _version: number,
-        _deleted?: boolean | null,
-        _lastChangedAt: number,
-        userCategoriesId?: string | null,
-      } | null >,
-      nextToken?: string | null,
-      startedAt?: number | null,
-    } | null,
+    username: string,
     owner?: string | null,
     createdAt: string,
     updatedAt: string,
@@ -1169,7 +1045,6 @@ export type OnCreateCategorySubscription = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
-    userCategoriesId?: string | null,
   } | null,
 };
 
@@ -1189,7 +1064,6 @@ export type OnUpdateCategorySubscription = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
-    userCategoriesId?: string | null,
   } | null,
 };
 
@@ -1209,6 +1083,5 @@ export type OnDeleteCategorySubscription = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
-    userCategoriesId?: string | null,
   } | null,
 };

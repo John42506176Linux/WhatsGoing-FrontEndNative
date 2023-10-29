@@ -4,36 +4,46 @@ import { Amplify, Auth, Hub } from "aws-amplify";
 import { View, Button, Text, StyleSheet, TouchableOpacity, Image, ImageBackground } from 'react-native';
 import bgImage from '../../assets/event_mobile_app_background_contrast.png';
 import googleLogo from '../../assets/googleLogo.png';
-import {StackNavigationProp} from '@react-navigation/stack';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { connect } from 'react-redux';
 import { getUser, listenAuthEvents } from '../../actions/userActions';
 
 type RootStackParamList = {
     "Home": any;
+    "Category Selection" : any;
     // add other screens here
 };
-type EventDetailsScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Login'>;
+type EventDetailsScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
 
 interface Props {
     navigation: EventDetailsScreenNavigationProp;
     user: any;
-    customState: string | null;
+    signedIn: boolean;
+    signUp: boolean;
     getUser: () => void;
     listenAuthEvents: () => void;
 }
 
 
-const LoginComponent: React.FC<Props> = ({ navigation, user, customState, getUser, listenAuthEvents }) => {
+const LoginComponent: React.FC<Props> = ({ navigation, user, signedIn, signUp, getUser, listenAuthEvents }) => {
   useEffect(() => {
     listenAuthEvents();
+  }, []);
+
+  useEffect(() => {
     getUser();
-  }, [getUser, listenAuthEvents]);
+  }, [getUser,signedIn]);
   
   useEffect(() => {
     if (user) {
-      navigation.navigate('Home'); // Navigate to the Event screen when the user is logged in
+      if(signUp) {
+        navigation.navigate('Category Selection');
+      }
+      else {
+        navigation.navigate('Home'); // Navigate to the Event screen when the user is logged in
+      }
     }
-  }, [user, navigation]);
+  }, [user, signUp]);
 
   return (
     <ImageBackground source={bgImage} style={styles.container}>
@@ -141,6 +151,8 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state:any) => ({
     user: state.user.user,
     customState: state.user.customState,
+    signUp: state.user.signUp, 
+    signedIn: state.user.signedIn,
 });
 
 const mapDispatchToProps = {

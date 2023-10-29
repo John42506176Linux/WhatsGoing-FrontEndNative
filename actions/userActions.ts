@@ -1,64 +1,88 @@
-import { Auth, DataStore, Hub } from 'aws-amplify';
+import { Auth, Hub,API } from 'aws-amplify';
 import { Dispatch } from 'redux';
-import {
-  USER_SIGN_IN,
-  USER_SIGN_OUT,
-  SET_CUSTOM_STATE,
-  GET_USER_REQUEST,
-  GET_USER_SUCCESS,
-  GET_USER_FAILURE,
-} from './actionTypes';
+import * as ActionTypes from './actionTypes';
 import { User } from '../models/user';
-import { User as UserAPI } from '../src/models/';
-import { categories } from '../constants/categories_constants';
-
+import * as mutations from '../src/graphql/mutations';
+import { GraphQLQuery } from '@aws-amplify/api';
+import * as queries from '../src/graphql/queries';
+import { CreateUserInput, CreateUserMutation, ListUsersQuery } from '../src/API';
 
 export const userSignIn = () => ({
-  type: USER_SIGN_IN,
+  type: ActionTypes.USER_SIGN_IN,
 });
 
-export const userSignOut = () => ({
-  type: USER_SIGN_OUT,
+export const userSignUp = () => ({
+  type: ActionTypes.USER_SIGN_UP,
+});
+
+export const userSignOutSuccess = () => ({
+  type: ActionTypes.USER_SIGN_OUT_SUCCESS,
+});
+
+export const userSignOutFailure = (error: string) => ({
+  type: ActionTypes.USER_SIGN_OUT_FAILURE,
+  payload: error,
 });
 
 export const setCustomState = (data: any) => ({
-  type: SET_CUSTOM_STATE,
+  type: ActionTypes.SET_CUSTOM_STATE,
   payload: data,
 });
 
 export const getUserRequest = () => ({
-  type: GET_USER_REQUEST,
+  type: ActionTypes.GET_USER_REQUEST,
 });
 
 export const getUserSuccess = (user: any) => ({
-  type: GET_USER_SUCCESS,
+  type: ActionTypes.GET_USER_SUCCESS,
   payload: user.toSerializable(),
 });
 
 export const getUserFailure = (error: string) => ({
-  type: GET_USER_FAILURE,
+  type: ActionTypes.GET_USER_FAILURE,
   payload: error,
 });
 
 export const listenAuthEvents = () => {
   return async (dispatch: Dispatch) => {
-    Hub.listen("auth", async ({ payload: { event, data } }) =>  {
+    console.log("Listening to auth events");
+    Hub.listen("auth", ({ payload: { event, data } }) =>  {
       switch (event) {
         case "signIn":
-          dispatch(userSignIn());
-          break;
-        case 'signUp':
-          await DataStore.save(new UserAPI(
-            {
-              categories: [],
+          console.log("Sign in Event: ", event);
+          try {
+            API.graphql<GraphQLQuery<ListUsersQuery>>({
+              query: queries.listUsers,
+            }).then((userData) => {
+              const items = userData.data?.listUsers?.items;
+              console.log("Items: ", items);
+              if (items?.length == 0) {
+                    try {
+                          // Datastore isn't working with custom primary key's so we have to use the API directly
+                          const todoDetails: CreateUserInput = {
+                            username: data.signInUserSession.idToken.payload.email,
+                          };
+                          console.log("Creating new user");
+                          API.graphql<GraphQLQuery<CreateUserMutation>>({ 
+                            query: mutations.createUser, 
+                            variables: { input: todoDetails }
+                          }).then((newUserData) => {
+                            console.log("New User Data: ", newUserData);
+                            dispatch(userSignUp());
+                          });                          
+                    } catch (error) {
+                      console.error('Error saving user: ', error);
+                    }
+              } else {
+                console.log("Signing in user");
+                dispatch(userSignIn());
+              }
+            });
+            } catch (error:any) {
+              console.log("Error Signing in ", error.message);
             }
-          ));
-        case "signOut":
-          dispatch(userSignOut());
           break;
-        case "customOAuthState":
-          dispatch(setCustomState(data));
-      }
+        }
     });
   };
 };
@@ -71,6 +95,18 @@ export const getUser = () => {
       dispatch(getUserSuccess(User.fromJSON(user.attributes)));
     } catch (error: any) {
       dispatch(getUserFailure(error.message));
+    }
+  };
+};
+
+
+export const signOut = () => {
+  return async (dispatch: Dispatch) => {
+    try {
+      await Auth.signOut();
+      dispatch(userSignOutSuccess());
+    } catch (error: any) {
+      dispatch(userSignOutFailure(error.message));
     }
   };
 };

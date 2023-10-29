@@ -7,6 +7,8 @@ import { Event } from '../../models/event';
 import SavedErrorComponent from '../popUps/savedEventErrorComponent';
 import LocationDisplay from '../locationComponent';
 import {StackNavigationProp} from '@react-navigation/stack';
+import { getLocation } from '../../actions/locationActions';
+import { loadCategories } from '../../actions/categoriesActions';
 
 type RootStackParamList = {
   "Event Details": { event: Event };
@@ -22,14 +24,17 @@ interface Props {
   location: any;
   categories: string[];
   fetchEvent: (userLocation: string, event_preferences: string[]) => void;
+  loadCategories: () => void;
 }
 
 const EventComponentList: React.FC<Props> = ({ navigation, 
   event_loading, event_data, event_error,
   location,  categories,
-  fetchEvent}) => {
+  fetchEvent, loadCategories}) => {
 
   useEffect(() => {
+    getLocation();
+    loadCategories();
     fetchEvent(location, categories);
   }, [fetchEvent]);
 
@@ -106,12 +111,13 @@ const mapStateToProps = (state: any) => {
     event_loading: state.events.loading,
     event_error: state.events.error,
     location: state.location.data,
-    categories: state.categories.selectedCategories,
+    categories: state.categories.submittedCategories,
   });
 }
 
 const mapDispatchToProps = {
   fetchEvent,
+  loadCategories,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(EventComponentList);

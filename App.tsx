@@ -8,18 +8,13 @@ import BottomTabNavigator from './components/bottomNavBarComponent';
 import LoginComponent from './components/screens/loginComponent';
 import CategorySelection from './components/screens/categoryComponent';
 import { NavigationContainer } from '@react-navigation/native';
+import { SQLiteAdapter } from '@aws-amplify/datastore-storage-adapter/SQLiteAdapter';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Amplify } from 'aws-amplify';
+import { Amplify, DataStore } from 'aws-amplify';
 import { urlOpener } from './utilities/utilities';
 import 'core-js/full/symbol/async-iterator';
 import awsconfig from './src/aws-exports';
-import { DataStore } from 'aws-amplify';
 
-import { SQLiteAdapter } from '@aws-amplify/datastore-storage-adapter/SQLiteAdapter';
-
-DataStore.configure({
-  storageAdapter: SQLiteAdapter
-});
 
 Amplify.configure({
   ...awsconfig,
@@ -27,6 +22,11 @@ Amplify.configure({
     ...awsconfig.oauth,
     urlOpener,
   },
+});
+
+
+DataStore.configure({
+  storageAdapter: SQLiteAdapter
 });
 
 const App: React.FC = () => {
@@ -38,25 +38,14 @@ const App: React.FC = () => {
   }}>
           <Stack.Screen name="Login" component={LoginComponent} options={{ headerShown: false }}/>
           <Stack.Screen name="Home" component={BottomTabNavigator} options={{ headerShown: false }}/>
-          <Stack.Screen name="Event Details">
-            {(props) => <EventView {...props}/>}
+          <Stack.Screen 
+            name="Event Details"
+          >
+            {(props: any) => <EventView {...props} />}
           </Stack.Screen>
           <Stack.Screen
             name="Category Selection"
             component={CategorySelection}
-            options={({ navigation }) => ({
-              headerRight: () => (
-                <TouchableOpacity
-                  onPress={() => {
-                    navigation.navigate('Home'); // Replace 'Home' with the name of your home screen
-                  }}
-                >
-                  <Text style={styles.headerText}>Next</Text>
-                </TouchableOpacity>
-              ),
-              headerBackVisible: true,
-              headerTitleStyle: styles.headerText,
-            })}
           />
       </Stack.Navigator>
       </Provider>
@@ -66,12 +55,12 @@ const App: React.FC = () => {
 
 const styles = StyleSheet.create({
   headerText: {
-    fontSize: 18,
-    fontWeight: '300',
-    fontFamily: 'sans-serif',
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#000',
+    marginRight: 10,
   },
 });
-
 
 const Stack = createNativeStackNavigator();
 

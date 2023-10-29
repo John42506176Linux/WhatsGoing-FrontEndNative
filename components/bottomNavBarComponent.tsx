@@ -2,6 +2,7 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import EventComponentList from './screens/eventListComponent';
 import SavedEventComponentList from './screens/savedEventListComponent';
+import ProfileComponent from './screens/profileComponent';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const Tab = createBottomTabNavigator();
@@ -25,12 +26,16 @@ const BottomTabNavigator: React.FC = () => {
         } else if (route.name === 'Saved Events') {
             iconName = focused ? 'heart' : 'heart-outline';
         }
+        else if (route.name === 'Profile') {
+            iconName = focused ? 'person' : 'person-outline';
+        }
         return <Icon name= {iconName} size={30} color="#900" />;
         },
     })}
     >
     <Tab.Screen name="Event List" component={EventComponentList} />
     <Tab.Screen name="Saved Events" component={SavedEventComponentList} />
+    <Tab.Screen name="Profile" component={ProfileComponent} />
     </Tab.Navigator>
   );
 };

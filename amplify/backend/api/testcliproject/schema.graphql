@@ -22,8 +22,7 @@ type Event @model @auth(rules: [{ allow: owner }]) {
 }
 
 type User @model @auth(rules: [{ allow: owner }]) {
-  id: ID!
-  categories: [Category] @hasMany
+  username: ID! @primaryKey
   owner: String @auth(rules: [{ allow: owner, operations: [ read] }])
 }
 
