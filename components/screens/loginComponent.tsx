@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect} from 'react';
 import { CognitoHostedUIIdentityProvider } from "@aws-amplify/auth";
-import { Amplify, Auth, Hub } from "aws-amplify";
-import { View, Button, Text, StyleSheet, TouchableOpacity, Image, ImageBackground } from 'react-native';
+import Logo from '../logoComponent';
+import { Auth } from "aws-amplify";
+import { View, ActivityIndicator, Text, StyleSheet, TouchableOpacity, Image, ImageBackground } from 'react-native';
 import bgImage from '../../assets/event_mobile_app_background_contrast.png';
 import googleLogo from '../../assets/googleLogo.png';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { connect } from 'react-redux';
 import { getUser, listenAuthEvents } from '../../actions/userActions';
+import { themeFonts, themeColors } from '../../styles/themeVariables';
 
 type RootStackParamList = {
     "Home": any;
@@ -20,12 +22,13 @@ interface Props {
     user: any;
     signedIn: boolean;
     signUp: boolean;
+    signInLoading: boolean;
     getUser: () => void;
     listenAuthEvents: () => void;
 }
 
 
-const LoginComponent: React.FC<Props> = ({ navigation, user, signedIn, signUp, getUser, listenAuthEvents }) => {
+const LoginComponent: React.FC<Props> = ({ navigation, user, signedIn, signUp, signInLoading, getUser, listenAuthEvents }) => {
   useEffect(() => {
     listenAuthEvents();
   }, []);
@@ -48,21 +51,27 @@ const LoginComponent: React.FC<Props> = ({ navigation, user, signedIn, signUp, g
   return (
     <ImageBackground source={bgImage} style={styles.container}>
     <View style={{ flex: 1, justifyContent: 'center' }}>
-      <Text style={styles.title}>WhatsGoingOn</Text>
+      <Logo style={styles.title} />
       <Text style={styles.subtitle}>Never be out of the loop again.</Text>
     </View>
 
     <View style={{ flex: 2, justifyContent: 'flex-end', marginLeft: 40, marginRight: 40 }}>
-      <TouchableOpacity style={styles.googleButton} onPress={() => Auth.federatedSignIn({ provider: CognitoHostedUIIdentityProvider.Google })}>
-        <Image style={styles.googleLogo} source={googleLogo} />
-        <Text style={styles.googleButtonText}>Sign in with Google</Text>
-      </TouchableOpacity>
+    {signInLoading ? (
+        <ActivityIndicator size="large" color="#0000ff" />
+      ) : (
+        <>
+          <TouchableOpacity style={styles.googleButton} onPress={() => Auth.federatedSignIn({ provider: CognitoHostedUIIdentityProvider.Google })}>
+            <Image style={styles.googleLogo} source={googleLogo} />
+            <Text style={styles.googleButtonText}>Sign in with Google</Text>
+          </TouchableOpacity>
 
-      <TouchableOpacity style={styles.signupButton}>
-        <Text style={styles.signupButtonText}>Sign Up</Text>
-      </TouchableOpacity>
+          <TouchableOpacity style={styles.signupButton}>
+            <Text style={styles.signupButtonText}>Sign Up</Text>
+          </TouchableOpacity>
 
-      <Text style={styles.facebookButtonText}>Log In </Text>
+          <Text style={styles.loginButtonText}>Log In </Text>
+        </>
+      )}
     </View>
   </ImageBackground>
   );
@@ -76,24 +85,21 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         padding: 20,
     },
-    title: {
-        fontSize: 45,               
-        fontWeight: 'bold',        
-        color: '#ffffff',          
-        textAlign: 'center',       
+    title: {  
         marginTop: 50,              
-        marginBottom: 20,
-        textShadowColor: 'rgba(0, 0, 0, 0.2)',  // Further reduced shadow's opacity
-        textShadowOffset: { width: 0, height: 1 },
-        textShadowRadius: 2,                   // Further reduced shadow blur
+        marginBottom: 20,                  // Further reduced shadow blur
         backgroundColor: 'rgba(0, 0, 0, 0.2)', // Lowered the background opacity
-        paddingHorizontal: 15,      
+        // paddingHorizontal: 15,      
         borderRadius: 7,            
-        paddingVertical: 5,         
+        paddingVertical: 5, 
+        alignSelf: 'center',
+        width: 300,
+        height: 200,        
     },
     subtitle: {
         fontSize: 18,
-        color: '#ffffff',       
+        color: '#ffffff',  
+        fontFamily: themeFonts.quaternary,     
         textAlign: 'center',    
         marginBottom: 0,
         marginLeft: 40,
@@ -119,13 +125,13 @@ const styles = StyleSheet.create({
     googleButtonText: {
       color: '#8E918F',
       fontSize: 18,
-      fontWeight: '500'
+      fontFamily: themeFonts.primary,
     },
     signupButton: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',  // Center align the content
-        backgroundColor: '#009BFF',  // Estimated shade of blue from the image
+        backgroundColor: themeColors.primary,  
         padding: 15,               // Adjusted padding to match the "Sign in with Google" button
         borderRadius: 25,
         marginBottom: 20,          // Kept margin for spacing
@@ -133,15 +139,15 @@ const styles = StyleSheet.create({
     signupButtonText: {
         color: 'white',
         fontSize: 18,
-        fontWeight: '500',
+        fontFamily: themeFonts.primary,
         textAlign: 'center',  // Center align the text
     },
-    facebookButtonText: {
+    loginButtonText: {
         fontSize: 18,
-        color: '#007BFF',               // Blue color
+        color: themeColors.primary,
         textDecorationLine: 'underline', // Underline the text
         textAlign: 'center',            // Center-aligning the text
-        fontWeight: 'bold',             // Making the text bold
+        fontFamily: themeFonts.primary,            // Making the text bold
         textShadowColor: 'rgba(0, 0, 0, 0.3)',  // Adding a subtle shadow
         textShadowOffset: { width: 0, height: 1 },
         textShadowRadius: 2,
@@ -153,6 +159,7 @@ const mapStateToProps = (state:any) => ({
     customState: state.user.customState,
     signUp: state.user.signUp, 
     signedIn: state.user.signedIn,
+    loading: state.user.signInLoading,
 });
 
 const mapDispatchToProps = {

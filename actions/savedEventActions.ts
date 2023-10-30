@@ -35,7 +35,7 @@ interface ListSavedEventsRequestAction {
 
 interface ListSavedEventsSuccessAction {
   type: typeof LIST_SAVED_EVENTS_SUCCESS;
-  payload: SavedEvent[];
+  payload: any;
   timestamp: number;
 }
 
@@ -106,11 +106,13 @@ export const listSavedEvents = () => {
   return async (dispatch: any) => {
     dispatch(listSavedEventsRequest());
     try {
-      const response = await DataStore.observeQuery(EventAPI);
-      const savedEvents = response.map((event) => {
-        return SavedEvent.fromJSON(event).toJSON();
+      DataStore.observeQuery(EventAPI).subscribe(({ items }) => 
+      {
+        const savedEvents = items.map((event) => {
+          return SavedEvent.fromJSON(event).toJSON();
+        });
+        dispatch(listSavedEventsSuccess(savedEvents,Date.now()));
       });
-      dispatch(listSavedEventsSuccess(savedEvents,Date.now()));
     } catch (error:any) {
       dispatch(listSavedEventsFailure(error.message,Date.now()));
     }

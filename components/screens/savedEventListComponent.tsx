@@ -7,6 +7,7 @@ import { Event } from '../../models/event';
 import SavedErrorComponent from '../popUps/savedEventErrorComponent';
 import LocationDisplay from '../locationComponent';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { themeColors, themeFonts } from '../../styles/themeVariables';
 
 type RootStackParamList = {
     "Event Details": { event: Event };
@@ -51,7 +52,6 @@ const EventComponentList: React.FC<Props> = ({ navigation,
                 </>
             ) : (
                 <View style={styles.top_container}>
-                    <Text style={{ ...styles.header, textAlign: 'center' }}>Saved Events </Text>
                     <FlatList
                         data={saved_event_data}
                         renderItem={({ item }) => {
@@ -84,8 +84,9 @@ const styles = StyleSheet.create({
     },
     header: {
         fontSize: 20,
-        fontWeight: 'bold',
+        fontFamily: themeFonts.quaternary,
         marginBottom: 10,
+        color :themeColors.secondary,
     },
     buttonContainer: {
         justifyContent: 'center',

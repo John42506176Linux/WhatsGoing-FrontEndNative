@@ -1,4 +1,4 @@
-import { Auth, Hub,API } from 'aws-amplify';
+import { Auth, Hub,API} from 'aws-amplify';
 import { Dispatch } from 'redux';
 import * as ActionTypes from './actionTypes';
 import { User } from '../models/user';
@@ -7,8 +7,17 @@ import { GraphQLQuery } from '@aws-amplify/api';
 import * as queries from '../src/graphql/queries';
 import { CreateUserInput, CreateUserMutation, ListUsersQuery } from '../src/API';
 
+
+export const userSignInRequest = () => ({
+  type: ActionTypes.USER_SIGN_IN_REQUEST,
+});
+
 export const userSignIn = () => ({
   type: ActionTypes.USER_SIGN_IN,
+});
+
+export const userSignInFailure = () => ({
+  type: ActionTypes.USER_SIGN_IN_FAILURE,
 });
 
 export const userSignUp = () => ({
@@ -45,41 +54,39 @@ export const getUserFailure = (error: string) => ({
 
 export const listenAuthEvents = () => {
   return async (dispatch: Dispatch) => {
-    console.log("Listening to auth events");
     Hub.listen("auth", ({ payload: { event, data } }) =>  {
       switch (event) {
         case "signIn":
-          console.log("Sign in Event: ", event);
+          dispatch(userSignInRequest());
           try {
             API.graphql<GraphQLQuery<ListUsersQuery>>({
               query: queries.listUsers,
             }).then((userData) => {
               const items = userData.data?.listUsers?.items;
-              console.log("Items: ", items);
               if (items?.length == 0) {
                     try {
                           // Datastore isn't working with custom primary key's so we have to use the API directly
                           const todoDetails: CreateUserInput = {
                             username: data.signInUserSession.idToken.payload.email,
                           };
-                          console.log("Creating new user");
                           API.graphql<GraphQLQuery<CreateUserMutation>>({ 
                             query: mutations.createUser, 
                             variables: { input: todoDetails }
                           }).then((newUserData) => {
-                            console.log("New User Data: ", newUserData);
                             dispatch(userSignUp());
+                          }).catch((error) => {
+                            console.error('Error saving user: ', error);
                           });                          
                     } catch (error) {
                       console.error('Error saving user: ', error);
                     }
               } else {
-                console.log("Signing in user");
                 dispatch(userSignIn());
               }
             });
             } catch (error:any) {
-              console.log("Error Signing in ", error.message);
+              console.error("Error Signing in ", error.message);
+              dispatch(userSignInFailure());
             }
           break;
         }

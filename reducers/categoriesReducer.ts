@@ -35,7 +35,7 @@ const categoriesReducer = (state = initialState, action: CategoriesActionTypes) 
     case ActionTypes.SUBMIT_CATEGORIES_REQUEST:
       return { ...state, loading: true };
     case ActionTypes.SUBMIT_CATEGORIES_SUCCESS:
-      return { ...state, loading: false };
+      return { ...state, loading: false, selectedCategories: []};
     case ActionTypes.SUBMIT_CATEGORIES_FAILURE:
       return { ...state, loading: false, error: action.payload };
     case ActionTypes.LOAD_CATEGORIES_REQUEST:

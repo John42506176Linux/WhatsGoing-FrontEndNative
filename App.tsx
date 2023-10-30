@@ -1,8 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { TouchableOpacity, Text, StyleSheet} from 'react-native';
+import { StyleSheet} from 'react-native';
 import store from './store/store';
-import EventComponentList from './components/screens/eventListComponent';
 import EventView from './components/screens/eventViewComponent';
 import BottomTabNavigator from './components/bottomNavBarComponent';
 import LoginComponent from './components/screens/loginComponent';
@@ -15,6 +14,8 @@ import { urlOpener } from './utilities/utilities';
 import 'core-js/full/symbol/async-iterator';
 import awsconfig from './src/aws-exports';
 
+
+Amplify.Logger.LOG_LEVEL = 'ERROR';
 
 Amplify.configure({
   ...awsconfig,

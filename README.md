@@ -4,7 +4,7 @@ WhatsGoingOn is a React Native app that helps users find current events happenin
 
 (This project originally started using expo , but was updated to use the CLI, see the original project here https://github.com/John42506176Linux/WhatsGoingOn-FrontEnd.git)
 
-![Demo GIF](./docs/Demo-Draft-1.gif)
+![Demo GIF](./docs/Demo-Draft-2.gif)
 
 ## Installation
 
@@ -43,6 +43,8 @@ To use the app:
 2. Allow the app to access your location.
 3. You should see a list of events happening in your area.
 4. Click on an event to view more details about it.
+5. Save interesting events to go back to later.
+6. Leave a star on the repo, to show some appreciation :)
 
 ## Contributing
 

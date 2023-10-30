@@ -4,6 +4,8 @@ import {
     GET_USER_REQUEST,
     GET_USER_SUCCESS,
     GET_USER_FAILURE,
+    USER_SIGN_IN_REQUEST,
+    USER_SIGN_IN_FAILURE,
     USER_SIGN_UP,
     USER_SIGN_OUT_SUCCESS,
     USER_SIGN_OUT_FAILURE,
@@ -12,6 +14,7 @@ import {
   const initialState = {
     signUp: false,
     signedIn: false,
+    signInLoading: false,
     user: null,
     customState: null,
     loading: false,

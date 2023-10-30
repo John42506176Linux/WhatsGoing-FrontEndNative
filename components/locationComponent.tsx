@@ -4,6 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import LocationErrorPopup from './popUps/locationErrorComponent';
 import { getLocation } from '../actions/locationActions';
+import { themeFonts } from '../styles/themeVariables';
 
 
 interface Props {
@@ -40,7 +41,7 @@ const LocationDisplay: React.FC<Props> = ({ location_data, location_loading, loc
 
     return (
         <TouchableOpacity style={styles.container}>
-            <Icon name="map-marker" size={20} color="blue" style={styles.pinIcon} />
+            <Icon name="map-marker" size={20} color="#1DA1F2" style={styles.pinIcon} />
             <Text style={styles.locationText}>{location_data}</Text>
             <Icon name="angle-down" size={12} color="black" style={styles.dropdownIcon} />
         </TouchableOpacity>
@@ -51,7 +52,7 @@ const styles = StyleSheet.create({
     container: {
       flexDirection: 'row',
       alignItems: 'center',
-      padding: 10,
+      padding: 15,
       borderRadius: 20,
       backgroundColor: 'white',
       shadowColor: '#000',
@@ -64,18 +65,20 @@ const styles = StyleSheet.create({
       elevation: 5,
       justifyContent: 'space-between',
       position: 'absolute',
-    bottom: 20, // This gives some space from the bottom edge, adjust as needed
+    bottom: 20, 
     alignSelf: 'center' 
+    
     },
     pinIcon: {
       marginRight: 5,
     },
     locationText: {
       fontSize: 16,
-      color: 'blue',
+      color: '#1DA1F2',
       marginRight: 5,
       textAlign: 'center', 
-      fontWeight: 'bold',
+      fontFamily: themeFonts.secondary,
+      marginLeft: 5,
     },
     dropdownIcon: {
       marginLeft: 5,
