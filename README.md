@@ -6,6 +6,12 @@ WhatsGoingOn is a React Native app that helps users find current events happenin
 
 ![Demo GIF](./docs/Demo-Draft-2.gif)
 
+## Architecture
+
+Here is an overview of the architecture of the application:
+
+![Architecture Diagram](./docs/architecture-diagram.png)
+
 ## Installation
 
 To set up the app using React Native CLI, follow these steps:
@@ -16,7 +22,7 @@ git clone https://github.com/John42506176Linux/WhatsGoingOn-FrontEnd
 
 2. Navigate to the project directory:
 
-cd WhatsGoingOn-FrontEnd
+cd WhatsGoingOn-FrontEnd-R
 
 3. Install the dependencies:
 
