@@ -1,7 +1,9 @@
 # WhatsGoingOn
 
 WhatsGoingOn is a React Native app that helps users find current events happening in their area using LLMs.
+
 Backend Here: https://github.com/John42506176Linux/WhatsGoingOn-BackEnd
+
 (This project originally started using expo, but was updated to use the CLI, see the original project here https://github.com/John42506176Linux/WhatsGoingOn-FrontEnd.git)
 
 ![Demo GIF](./docs/Demo-Draft-2.gif)
