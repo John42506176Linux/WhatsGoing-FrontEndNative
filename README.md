@@ -1,8 +1,8 @@
 # WhatsGoingOn
 
-WhatsGoingOn is a React Native app that helps users find current events happening in their area.
-
-(This project originally started using expo , but was updated to use the CLI, see the original project here https://github.com/John42506176Linux/WhatsGoingOn-FrontEnd.git)
+WhatsGoingOn is a React Native app that helps users find current events happening in their area using LLMs.
+Backend Here: https://github.com/John42506176Linux/WhatsGoingOn-BackEnd
+(This project originally started using expo, but was updated to use the CLI, see the original project here https://github.com/John42506176Linux/WhatsGoingOn-FrontEnd.git)
 
 ![Demo GIF](./docs/Demo-Draft-2.gif)
 
@@ -18,11 +18,11 @@ To set up the app using React Native CLI, follow these steps:
 
 1. Clone the repository:
 
-git clone https://github.com/John42506176Linux/WhatsGoingOn-FrontEnd
+git clone https://github.com/John42506176Linux/WhatsGoing-FrontEndNative
 
 2. Navigate to the project directory:
 
-cd WhatsGoingOn-FrontEnd-R
+cd WhatsGoingOn-FrontEndNative
 
 3. Install the dependencies:
 
